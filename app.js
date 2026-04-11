@@ -66,8 +66,18 @@ if (SpeechRecognition) {
     searchYouTube(transcript);
   };
 
-  recognition.onerror = () => {
-    setStatus(MSG.searchFailed, "error");
+  recognition.onerror = (event) => {
+    console.error("SpeechRecognition error:", event.error, event);
+    const map = {
+      "not-allowed":       "മൈക്ക് അനുമതി നിഷേധിച്ചു (mic permission denied)",
+      "service-not-allowed":"മൈക്ക് അനുമതി നിഷേധിച്ചു (mic permission denied)",
+      "no-speech":         "ഒന്നും കേട്ടില്ല. വീണ്ടും സംസാരിക്കൂ.",
+      "audio-capture":     "മൈക്ക് കണ്ടെത്തിയില്ല",
+      "network":           "നെറ്റ്‌വർക്ക് പിശക് (network error)",
+      "language-not-supported": "മലയാളം ഈ ബ്രൗസറിൽ പിന്തുണയ്ക്കുന്നില്ല",
+      "aborted":           "റദ്ദാക്കി",
+    };
+    setStatus(map[event.error] || ("മൈക്ക് പിശക്: " + event.error), "error");
   };
 
   recognition.onend = () => {
