@@ -7,7 +7,7 @@
 //   2. Enable "YouTube Data API v3"
 //   3. Credentials → Create API Key → copy it here
 // ============================================================
-const YOUTUBE_API_KEY = "YOUR_API_KEY_HERE";
+const YOUTUBE_API_KEY = "AIzaSyDi79UoXTKw6n-pyk00zYL3-trM-WxsgSo";
 
 // ----- Malayalam UI strings -----
 const MSG = {
