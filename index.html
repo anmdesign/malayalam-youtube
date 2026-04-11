@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>YouTube Finder</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1 class="app-title">YouTube</h1>
+  </header>
+
+  <main class="app-main">
+    <div class="mic-wrap">
+      <button id="micButton" class="mic-button" aria-label="സംസാരിക്കൂ">
+        <svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true">
+          <path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/>
+        </svg>
+      </button>
+      <div class="mic-label">സംസാരിക്കൂ</div>
+    </div>
+
+    <form id="searchForm" class="search-form" autocomplete="off">
+      <input
+        id="searchInput"
+        class="search-input"
+        type="text"
+        placeholder="എന്ത് കാണണം?"
+        aria-label="എന്ത് കാണണം?"
+      />
+      <button type="submit" class="search-submit" aria-label="തിരയുക">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+          <path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 5 1.5-1.5-5-5zM9.5 14A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/>
+        </svg>
+      </button>
+    </form>
+
+    <div id="status" class="status" role="status" aria-live="polite">
+      🎤 മൈക്ക് അമർത്തി സംസാരിക്കൂ
+    </div>
+
+    <ul id="results" class="results" aria-label="Search results"></ul>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
