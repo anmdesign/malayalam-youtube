@@ -71,9 +71,9 @@ const ACTOR_MAX_YEAR = 2016;
 const ACTOR_REFRESH_DAYS = 7;    // each actor's list is rebuilt about once a week...
 const ACTOR_REFRESH_PER_DAY = 3; // ...a few per day, to spread the quota (new actors are always built)
 
-const ROW_SIZE = 15;             // movies per row
-const MAX_NEW_LOOKUPS = 8;       // YouTube searches per row per day (100 quota units each)
-const MIN_MOVIE_MINUTES = 60;    // anything shorter is a clip, not a film
+const POOL_SIZE = 60;            // movies kept per row; the app shows a random 15 each time it opens
+const MAX_NEW_LOOKUPS = +(process.env.MAX_NEW_LOOKUPS ?? 8); // YouTube searches per row per day (100 quota units each)
+const MIN_MOVIE_MINUTES = 75;    // anything shorter is a clip or one part of a split-up film
 const CACHE_RECHECK_DAYS = 60;   // retry films that weren't on YouTube after this long
 
 // ----- Helpers -----
@@ -226,6 +226,15 @@ async function wikidataFilms(where) {
 }
 
 const NOT_A_FILM = /trailer|teaser|scene|song|promo|climax|making|review|reaction|interview|jukebox/i;
+// Films uploaded in pieces: "Part 1", "Episode 2", "(1/3)", "1 of 2", "ഭാഗം 1"
+const PART_OF_FILM = /\bpart\s*[-:#.]?\s*(\d+|one|two|three|four|i{1,3}|iv)\b|\bepisode\b|\bep\s*\d|\(\s*\d+\s*\/\s*\d+\s*\)|\b\d+\s+of\s+\d+\b|പാർട്ട്|ഭാഗം/i;
+// A year in the title that is far from the film's release year means it is a
+// different (usually newer) film with the same name.
+const wrongYear = (title, year) => {
+  const years = (title.match(/\b(19[3-9]\d|20[0-4]\d)\b/g) || []).map(Number);
+  return years.length > 0 && !years.some((y) => Math.abs(y - year) <= 1);
+};
+const isFullFilm = (card) => card.duration >= MIN_MOVIE_MINUTES * 60 && !NOT_A_FILM.test(card.title) && !PART_OF_FILM.test(card.title);
 
 // Find the full movie on YouTube for one Wikidata film. Returns a video id or null.
 async function searchFilm(film) {
@@ -237,7 +246,7 @@ async function searchFilm(film) {
   });
   const hit = (s.items || []).find((it) => {
     const title = decodeEntities(it.snippet.title);
-    return norm(title).includes(label) && !NOT_A_FILM.test(title);
+    return norm(title).includes(label) && !NOT_A_FILM.test(title) && !PART_OF_FILM.test(title) && !wrongYear(title, film.year);
   });
   return hit?.id?.videoId || null;
 }
@@ -246,7 +255,6 @@ async function buildFilmRow(name, films, cache, today) {
   const picked = [];
   let lookups = 0;
   for (const film of seededShuffle(films, name + today)) {
-    if (picked.length >= ROW_SIZE * 2) break; // spares in case some fail the duration check
     const c = cache[film.qid];
     const fresh = c && (c.videoId || (Date.parse(today) - Date.parse(c.checked)) / 864e5 < CACHE_RECHECK_DAYS);
     if (fresh) {
@@ -265,11 +273,11 @@ async function buildFilmRow(name, films, cache, today) {
   for (const { film, videoId } of picked) {
     const item = details.get(videoId);
     const card = item && toCard(item, { year: film.year });
-    if (!card || card.duration < MIN_MOVIE_MINUTES * 60) {
+    if (!card || !isFullFilm(card) || wrongYear(card.title, film.year)) {
       cache[film.qid] = { videoId: null, checked: today, label: film.label }; // deleted or not a full film
       continue;
     }
-    if (row.length < ROW_SIZE) row.push(card);
+    if (row.length < POOL_SIZE) row.push(card);
   }
   console.log(`  ${name}: ${row.length} movies (${lookups} new YouTube lookups, ${films.length} films known)`);
   return row;
@@ -301,7 +309,7 @@ async function buildActor(actor) {
     if (!item) continue;
     const card = toCard(item);
     const t = norm(card.title);
-    if (card.duration < MIN_MOVIE_MINUTES * 60 || NOT_A_FILM.test(card.title)) continue;
+    if (!isFullFilm(card)) continue;
     if (lateTitles.some((late) => t.includes(late))) continue;
     videos.push(card);
   }
@@ -344,7 +352,8 @@ async function main() {
     feed.actors = [];
     for (const a of ACTORS) {
       const rebuild = !prev.has(a.key) || stale.includes(a);
-      feed.actors.push(rebuild ? await buildActor(a) : { ...prev.get(a.key), name: a.ml });
+      const old = prev.get(a.key);
+      feed.actors.push(rebuild ? await buildActor(a) : { ...old, name: a.ml, videos: old.videos.filter(isFullFilm) });
     }
 
     feed.moviesDate = today;

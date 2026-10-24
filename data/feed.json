@@ -89,10 +89,10 @@
    "live": true
   },
   {
-   "id": "IG9dAHXJ21A",
-   "title": "LIVE: NATION PLUS | ഒരു ദിവസത്തെ പ്രധാന ദേശീയ വാർത്തകൾ അരമണിക്കൂറിൽ | JANAM TV | 24-10-2026",
+   "id": "T9Ol2JHqKlM",
+   "title": "Janam TV News Live | ജനം ടിവി ലൈവ് | HD Streaming | Janam Live | Janam News | Malayalam News Live TV",
    "channel": "Janam TV",
-   "thumb": "https://i.ytimg.com/vi/IG9dAHXJ21A/hqdefault.jpg?v=6adcb17c",
+   "thumb": "https://i.ytimg.com/vi/T9Ol2JHqKlM/hqdefault.jpg?v=6a9b73ad",
    "duration": 0,
    "name": "ജനം ടിവി",
    "logo": "https://yt3.ggpht.com/ytc/AIdro_nCmUp4mMxnlpluV1MH4km_K8rR8fHG6En1jdFfpBImmBI=s88-c-k-c0x00ffffff-no-rj",
@@ -111,7 +111,7 @@
    "live": true
   }
  ],
- "newsUpdatedAt": "2026-10-24T14:14:10.736Z",
+ "newsUpdatedAt": "2026-10-24T14:26:26.004Z",
  "actors": [
   {
    "key": "mohanlal",
@@ -5579,22 +5579,6 @@
    "title": "70-കളിലെ സിനിമകൾ",
    "videos": [
     {
-     "id": "VMZYt-uc9Lg",
-     "title": "Kuttavum Sikshayum (2026) Malayalam Full Movie 4K UHD | Sathyaraj | Vikranth | Harish Kalyan | SAC",
-     "channel": "Video Park Malayalam",
-     "thumb": "https://i.ytimg.com/vi/VMZYt-uc9Lg/hqdefault.jpg",
-     "duration": 8758,
-     "year": 1976
-    },
-    {
-     "id": "u2PClGTwfTA",
-     "title": "Kanyaka Malayalam Full Movie | Madhu | Jayan | Jayabharathi | HD |",
-     "channel": "Film World",
-     "thumb": "https://i.ytimg.com/vi/u2PClGTwfTA/hqdefault.jpg",
-     "duration": 7983,
-     "year": 1978
-    },
-    {
      "id": "TgICRorfSWY",
      "title": "Aaradi Manninte Janmi 1972:  Full Malayalam Movie",
      "channel": "Malayali Biscoot",
@@ -5609,6 +5593,14 @@
      "thumb": "https://i.ytimg.com/vi/DT4Nxc6nvr0/hqdefault.jpg",
      "duration": 8555,
      "year": 1977
+    },
+    {
+     "id": "u2PClGTwfTA",
+     "title": "Kanyaka Malayalam Full Movie | Madhu | Jayan | Jayabharathi | HD |",
+     "channel": "Film World",
+     "thumb": "https://i.ytimg.com/vi/u2PClGTwfTA/hqdefault.jpg",
+     "duration": 7983,
+     "year": 1978
     }
    ]
   },
@@ -5623,30 +5615,6 @@
      "thumb": "https://i.ytimg.com/vi/BeDVOp04W5g/hqdefault.jpg",
      "duration": 6686,
      "year": 1984
-    },
-    {
-     "id": "4YRmnkvOh50",
-     "title": "Marupacha | Malayalam Full Movie | Prem Nazir | Swapna | Sukumari | Sukumaran | Jagathy Balan K Nair",
-     "channel": "Highness Entertainment Channel ",
-     "thumb": "https://i.ytimg.com/vi/4YRmnkvOh50/hqdefault.jpg",
-     "duration": 7047,
-     "year": 1982
-    },
-    {
-     "id": "wXThe6K6Jk0",
-     "title": "Koodum Thedi | Full Movie | Mohanlal | Rahman | Radhika |  Nadia Moidu",
-     "channel": "Kokers Entertainments",
-     "thumb": "https://i.ytimg.com/vi/wXThe6K6Jk0/hqdefault.jpg",
-     "duration": 5969,
-     "year": 1985
-    },
-    {
-     "id": "2N52QPLNm0U",
-     "title": "Aagamanam | ആഗമനം | MG Soman, Srividya, Ravikumar, Ambhika, Sukumari | Malayalam SuperHit Full Movie",
-     "channel": "Millennium Cinemas",
-     "thumb": "https://i.ytimg.com/vi/2N52QPLNm0U/hqdefault.jpg",
-     "duration": 7976,
-     "year": 1980
     },
     {
      "id": "TPvNVbTia4M",
@@ -5689,6 +5657,22 @@
      "year": 1983
     },
     {
+     "id": "4YRmnkvOh50",
+     "title": "Marupacha | Malayalam Full Movie | Prem Nazir | Swapna | Sukumari | Sukumaran | Jagathy Balan K Nair",
+     "channel": "Highness Entertainment Channel ",
+     "thumb": "https://i.ytimg.com/vi/4YRmnkvOh50/hqdefault.jpg",
+     "duration": 7047,
+     "year": 1982
+    },
+    {
+     "id": "duWUX3J5tn4",
+     "title": "Sanmanassullavarkku Samadhanam Full Movie | Mohanlal | Sreenivasan",
+     "channel": "Kokers Entertainments",
+     "thumb": "https://i.ytimg.com/vi/duWUX3J5tn4/hqdefault.jpg",
+     "duration": 7971,
+     "year": 1986
+    },
+    {
      "id": "70HkW1YVT8A",
      "title": "Cheppu ചെപ്പ് Full Malayalam Movie | Mohanlal | Lizy | Super Hit Malayalam Full Movie",
      "channel": "Airene Malayalam Movies",
@@ -5705,6 +5689,22 @@
      "year": 1985
     },
     {
+     "id": "wXThe6K6Jk0",
+     "title": "Koodum Thedi | Full Movie | Mohanlal | Rahman | Radhika |  Nadia Moidu",
+     "channel": "Kokers Entertainments",
+     "thumb": "https://i.ytimg.com/vi/wXThe6K6Jk0/hqdefault.jpg",
+     "duration": 5969,
+     "year": 1985
+    },
+    {
+     "id": "2N52QPLNm0U",
+     "title": "Aagamanam | ആഗമനം | MG Soman, Srividya, Ravikumar, Ambhika, Sukumari | Malayalam SuperHit Full Movie",
+     "channel": "Millennium Cinemas",
+     "thumb": "https://i.ytimg.com/vi/2N52QPLNm0U/hqdefault.jpg",
+     "duration": 7976,
+     "year": 1980
+    },
+    {
      "id": "kEAnU8BcTvc",
      "title": "Adharvam Full Movie",
      "channel": "Cartoon Energy ",
@@ -5719,14 +5719,6 @@
      "thumb": "https://i.ytimg.com/vi/-uuw_SnwxJw/hqdefault.jpg",
      "duration": 6566,
      "year": 1983
-    },
-    {
-     "id": "duWUX3J5tn4",
-     "title": "Sanmanassullavarkku Samadhanam Full Movie | Mohanlal | Sreenivasan",
-     "channel": "Kokers Entertainments",
-     "thumb": "https://i.ytimg.com/vi/duWUX3J5tn4/hqdefault.jpg",
-     "duration": 7971,
-     "year": 1986
     }
    ]
   },
@@ -5734,14 +5726,6 @@
    "key": "90s",
    "title": "90-കളിലെ സിനിമകൾ",
    "videos": [
-    {
-     "id": "xGpE_pcNGtw",
-     "title": "Malayalam Full Movie Aadhi Thaalam | Malayalam Romantic Movie",
-     "channel": "gagnoj",
-     "thumb": "https://i.ytimg.com/vi/xGpE_pcNGtw/hqdefault.jpg",
-     "duration": 7438,
-     "year": 1990
-    },
     {
      "id": "5ZC8ST3lArc",
      "title": "ഉദ്യാനപാലകൻ | Udhyanapalakan | Mammootty, kalabhavan Mani & Kaveri | Malayalam Super Hit Full Movie",
@@ -5783,20 +5767,28 @@
      "year": 1997
     },
     {
-     "id": "6gvF_nf_uPw",
-     "title": "American Ammayi Malayalam Full Comedy Movie | Jagathy Sreekumar | Kalpana | KPAC Lalitha",
-     "channel": "Entertainment Corner",
-     "thumb": "https://i.ytimg.com/vi/6gvF_nf_uPw/hqdefault.jpg",
-     "duration": 7718,
-     "year": 1999
+     "id": "tKqIGO6rMjE",
+     "title": "Vrudhanmare Sookshikkuka Malayalam Comedy Full Movie | Jayaram | Dileep | Harisree Ashokan | Kushboo",
+     "channel": "Speed Audio & Video",
+     "thumb": "https://i.ytimg.com/vi/tKqIGO6rMjE/hqdefault.jpg",
+     "duration": 7608,
+     "year": 1995
     },
     {
-     "id": "nsyOb65IgUw",
-     "title": "Aardram Malayalam Full Movie | Murali | Urvashi | Jagathy Sreekumar | Vijayaraghavan | Kalpana",
-     "channel": "Malayalam Latest Movies",
-     "thumb": "https://i.ytimg.com/vi/nsyOb65IgUw/hqdefault.jpg",
-     "duration": 8462,
-     "year": 1992
+     "id": "xGpE_pcNGtw",
+     "title": "Malayalam Full Movie Aadhi Thaalam | Malayalam Romantic Movie",
+     "channel": "gagnoj",
+     "thumb": "https://i.ytimg.com/vi/xGpE_pcNGtw/hqdefault.jpg",
+     "duration": 7438,
+     "year": 1990
+    },
+    {
+     "id": "Jw8BQdEl-AA",
+     "title": "Ayal Kadha Ezhuthukayanu Malayalam  Full Movie | Mohanlal | Sreenivasan | Nandini | Innocent",
+     "channel": "EMPIRE VIDEO",
+     "thumb": "https://i.ytimg.com/vi/Jw8BQdEl-AA/hqdefault.jpg",
+     "duration": 9341,
+     "year": 1998
     },
     {
      "id": "ViEJ3022BPM",
@@ -5815,12 +5807,36 @@
      "year": 1994
     },
     {
+     "id": "izHqHKMSpMc",
+     "title": "Kottayam Kunjachan Malayalam Full Movie | Mammootty | Innocent | Babu Antony | Malayalam Full Movies",
+     "channel": "Malayalam Full Movies",
+     "thumb": "https://i.ytimg.com/vi/izHqHKMSpMc/hqdefault.jpg",
+     "duration": 6499,
+     "year": 1990
+    },
+    {
      "id": "_d-AdeBZVYc",
      "title": "അക്കരെ അക്കരെ അക്കരെ | Akkare Akkare Akkare | Mohanlal, Sreenivasan, Parvathi | Super Hit Full Movie",
      "channel": "Millennium Cinemas",
      "thumb": "https://i.ytimg.com/vi/_d-AdeBZVYc/hqdefault.jpg",
      "duration": 8991,
      "year": 1990
+    },
+    {
+     "id": "nsyOb65IgUw",
+     "title": "Aardram Malayalam Full Movie | Murali | Urvashi | Jagathy Sreekumar | Vijayaraghavan | Kalpana",
+     "channel": "Malayalam Latest Movies",
+     "thumb": "https://i.ytimg.com/vi/nsyOb65IgUw/hqdefault.jpg",
+     "duration": 8462,
+     "year": 1992
+    },
+    {
+     "id": "Vjs--LR8PXM",
+     "title": "CID Unnikrishnan B.A. B.Ed | Malayalam Full Movie | Jayaram Superhit | Full Malayalam Comedy Movie",
+     "channel": "Airene Malayalam Movies",
+     "thumb": "https://i.ytimg.com/vi/Vjs--LR8PXM/hqdefault.jpg",
+     "duration": 5269,
+     "year": 1994
     },
     {
      "id": "JQ6WhCFTbQg",
@@ -5845,6 +5861,30 @@
      "thumb": "https://i.ytimg.com/vi/RbAr8PUBcVY/hqdefault.jpg",
      "duration": 8354,
      "year": 1992
+    },
+    {
+     "id": "6gvF_nf_uPw",
+     "title": "American Ammayi Malayalam Full Comedy Movie | Jagathy Sreekumar | Kalpana | KPAC Lalitha",
+     "channel": "Entertainment Corner",
+     "thumb": "https://i.ytimg.com/vi/6gvF_nf_uPw/hqdefault.jpg",
+     "duration": 7718,
+     "year": 1999
+    },
+    {
+     "id": "55J3oSjkSK4",
+     "title": "Udayapuram Sulthan Malayalam Full Movie | Dileep | Jagathy Sreekumar | Malayalam Comedy Movies",
+     "channel": "Malayalam Comedy Movies",
+     "thumb": "https://i.ytimg.com/vi/55J3oSjkSK4/hqdefault.jpg",
+     "duration": 9385,
+     "year": 1999
+    },
+    {
+     "id": "ViEfTbVpIIk",
+     "title": "Malappuram Haji Mahanaya Joji | Mukesh | Siddique | Maathu | Jagathy | Malayalam Full Movie",
+     "channel": "Malayalam Films New",
+     "thumb": "https://i.ytimg.com/vi/ViEfTbVpIIk/hqdefault.jpg",
+     "duration": 8170,
+     "year": 1994
     },
     {
      "id": "sX-mOuh6FY0",
@@ -5979,6 +6019,54 @@
      "thumb": "https://i.ytimg.com/vi/tKqIGO6rMjE/hqdefault.jpg",
      "duration": 7608,
      "year": 1995
+    },
+    {
+     "id": "55J3oSjkSK4",
+     "title": "Udayapuram Sulthan Malayalam Full Movie | Dileep | Jagathy Sreekumar | Malayalam Comedy Movies",
+     "channel": "Malayalam Comedy Movies",
+     "thumb": "https://i.ytimg.com/vi/55J3oSjkSK4/hqdefault.jpg",
+     "duration": 9385,
+     "year": 1999
+    },
+    {
+     "id": "fV5iyRf_RFo",
+     "title": "Kalyanaraman Malayalam Full Movie | Comedy Full Movie | Dileep | Navya | Salim Kumar | Innocent",
+     "channel": "Matinee Now HD",
+     "thumb": "https://i.ytimg.com/vi/fV5iyRf_RFo/hqdefault.jpg",
+     "duration": 7910,
+     "year": 2002
+    },
+    {
+     "id": "Jw8BQdEl-AA",
+     "title": "Ayal Kadha Ezhuthukayanu Malayalam  Full Movie | Mohanlal | Sreenivasan | Nandini | Innocent",
+     "channel": "EMPIRE VIDEO",
+     "thumb": "https://i.ytimg.com/vi/Jw8BQdEl-AA/hqdefault.jpg",
+     "duration": 9341,
+     "year": 1998
+    },
+    {
+     "id": "Vjs--LR8PXM",
+     "title": "CID Unnikrishnan B.A. B.Ed | Malayalam Full Movie | Jayaram Superhit | Full Malayalam Comedy Movie",
+     "channel": "Airene Malayalam Movies",
+     "thumb": "https://i.ytimg.com/vi/Vjs--LR8PXM/hqdefault.jpg",
+     "duration": 5269,
+     "year": 1994
+    },
+    {
+     "id": "izHqHKMSpMc",
+     "title": "Kottayam Kunjachan Malayalam Full Movie | Mammootty | Innocent | Babu Antony | Malayalam Full Movies",
+     "channel": "Malayalam Full Movies",
+     "thumb": "https://i.ytimg.com/vi/izHqHKMSpMc/hqdefault.jpg",
+     "duration": 6499,
+     "year": 1990
+    },
+    {
+     "id": "ViEfTbVpIIk",
+     "title": "Malappuram Haji Mahanaya Joji | Mukesh | Siddique | Maathu | Jagathy | Malayalam Full Movie",
+     "channel": "Malayalam Films New",
+     "thumb": "https://i.ytimg.com/vi/ViEfTbVpIIk/hqdefault.jpg",
+     "duration": 8170,
+     "year": 1994
     }
    ]
   }

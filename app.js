@@ -117,6 +117,23 @@ function decodeEntities(s) {
   return t.value;
 }
 
+// Films uploaded in pieces ("Part 1", "(1/3)", "1 of 2", "ഭാഗം 2") are hidden,
+// and so is anything too short to be a whole film, so only complete movies show.
+const PART_OF_FILM = /\bpart\s*[-:#.]?\s*(\d+|one|two|three|four|i{1,3}|iv)\b|\bepisode\b|\bep\s*\d|\(\s*\d+\s*\/\s*\d+\s*\)|\b\d+\s+of\s+\d+\b|പാർട്ട്|ഭാഗം/i;
+const MIN_MOVIE_SECONDS = 75 * 60;
+const isFullFilm = (v) => v.duration >= MIN_MOVIE_SECONDS && !PART_OF_FILM.test(v.title);
+
+const ROW_SHOW = 15; // movies shown per row, picked at random from the row's pool
+
+function shuffled(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function el(tag, className, text) {
   const e = document.createElement(tag);
   if (className) e.className = className;
@@ -197,7 +214,7 @@ function actorButton(actor) {
     b.appendChild(el("span", "actor-photo actor-initial", first));
   }
   b.appendChild(el("span", "actor-name", actor.name));
-  b.addEventListener("click", () => showList(`${actor.name} ${MSG.moviesOf}`, actor.videos));
+  b.addEventListener("click", () => showList(`${actor.name} ${MSG.moviesOf}`, shuffled(actor.videos.filter(isFullFilm))));
   return b;
 }
 
@@ -205,7 +222,8 @@ function renderHome() {
   homeView.innerHTML = "";
   if (feed.news?.length)   homeView.appendChild(rowSection(MSG.rowNews, feed.news.map(newsTile)));
   for (const row of feed.rows || []) {
-    if (row.videos.length) homeView.appendChild(rowSection(row.title, row.videos.map(movieTile)));
+    const videos = shuffled(row.videos.filter(isFullFilm)).slice(0, ROW_SHOW);
+    if (videos.length) homeView.appendChild(rowSection(row.title, videos.map(movieTile)));
   }
   if (feed.actors?.length) homeView.appendChild(rowSection(MSG.rowActors, feed.actors.map(actorButton)));
 }
@@ -379,7 +397,7 @@ async function searchYouTube(spoken) {
         duration: parseDuration(it.contentDetails.duration),
         live:     it.snippet.liveBroadcastContent === "live",
       }))
-      .filter((v) => v.live || (v.duration > 60 && !/#shorts/i.test(v.title)));
+      .filter((v) => v.live || (v.duration > 60 && !/#shorts/i.test(v.title) && !PART_OF_FILM.test(v.title)));
 
     if (items.length === 0) {
       setStatus(MSG.noResults);
@@ -438,3 +456,11 @@ function renderResults(items) {
 // ----- Start -----
 history.replaceState({ view: "home" }, "");
 loadFeed();
+
+// Coming back to the app after a while (e.g. after watching a film in the
+// YouTube app): reload the rows so they are fresh and in a new order.
+let hiddenAt = 0;
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) hiddenAt = Date.now();
+  else if (Date.now() - hiddenAt > 5 * 60e3 && !homeView.classList.contains("hidden")) loadFeed();
+});
