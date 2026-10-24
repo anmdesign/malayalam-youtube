@@ -35,7 +35,12 @@
   "fullScopeUrl": "https://anmdesign.github.io/malayalam-youtube/",
   "minSdkVersion": 21,
   "orientation": "portrait",
-  "fingerprints": [],
+  "fingerprints": [
+    {
+      "name": "anmdesign-2026",
+      "value": "34:79:88:6A:99:12:A1:DB:F1:71:CF:15:F9:B3:2F:E4:CD:EA:91:C6:80:D0:FC:56:6F:E2:A8:7F:0E:E6:CD:05"
+    }
+  ],
   "additionalTrustedOrigins": [],
   "retainedBundles": [],
   "protocolHandlers": [],
