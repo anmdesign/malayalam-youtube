@@ -7,3 +7,5 @@ gradle-8.11.1-bin.zip
 twa/build/
 twa/app/build/
 twa/.gradle/
+*.apk
+twa/KEYSTORE-PASSWORD.txt

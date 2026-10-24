@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<!--
+  App icon source. Rendered to PNG by icons/source/render.sh with headless Chrome.
+  Query params:
+    v      design: kasavu | ruby | mic
+    layer  full (default) | bg | fg   (bg/fg are the Android adaptive-icon layers)
+    mono   1 = white silhouette on transparent (notification icon)
+    pad    extra scale for the artwork, e.g. 0.66 for the adaptive foreground safe zone
+-->
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Chettan+2:wght@800&display=block" rel="stylesheet">
+<style>
+  html, body { margin: 0; width: 100vw; height: 100vh; overflow: hidden; background: transparent; }
+  .icon { position: relative; width: 100vmin; height: 100vmin; overflow: hidden; }
+  .bg, .fg { position: absolute; inset: 0; }
+  .fg { display: flex; align-items: center; justify-content: center; }
+  .art { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+  .glyph {
+    font-family: "Baloo Chettan 2", sans-serif;
+    font-weight: 800;
+    line-height: 1;
+    font-size: 46vmin;
+    padding: 4vmin 3vmin 10vmin;
+    transform: translateY(1vmin);
+  }
+
+  /* ----- kasavu: Kerala saree cream + gold border, maroon letter ----- */
+  .kasavu .bg {
+    background:
+      radial-gradient(120% 90% at 30% 15%, #fffaf0 0%, #f6ead0 55%, #ead9b3 100%);
+  }
+  .kasavu .bg::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 7vmin; height: 13vmin;
+    background:
+      linear-gradient(#0000 0 1.2vmin, #b8860b 1.2vmin 2vmin, #0000 2vmin 3.2vmin,
+                      #d4a72c 3.2vmin 9.8vmin, #0000 9.8vmin 11vmin, #b8860b 11vmin 11.8vmin, #0000 11.8vmin),
+      linear-gradient(90deg, #a87412, #f6d77a 30%, #c9971e 55%, #f3d16b 80%, #a87412);
+    -webkit-mask: linear-gradient(#000 0 0);
+    mix-blend-mode: multiply;
+  }
+  .kasavu .glyph {
+    background: linear-gradient(170deg, #9c1a24, #6d0a14 70%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 1.2vmin 1.4vmin rgba(90, 40, 0, 0.28));
+    transform: translateY(-5vmin);
+  }
+
+  /* ----- ruby: deep red gem gradient, white letter ----- */
+  .ruby .bg {
+    background:
+      radial-gradient(90% 70% at 28% 18%, rgba(255,255,255,0.28), rgba(255,255,255,0) 60%),
+      radial-gradient(130% 120% at 30% 20%, #ff4d4d 0%, #e0101e 45%, #8a0014 100%);
+  }
+  .ruby .glyph {
+    color: #fff;
+    filter: drop-shadow(0 1.5vmin 2.2vmin rgba(70, 0, 10, 0.45));
+  }
+
+  /* ----- mic: dark graphite with glowing coral disc and white mic ----- */
+  .mic .bg {
+    background: radial-gradient(120% 120% at 30% 15%, #34343a 0%, #17171a 55%, #050506 100%);
+  }
+  .mic .disc {
+    width: 64vmin; height: 64vmin; border-radius: 50%;
+    background: radial-gradient(circle at 35% 28%, #ff8a5c 0%, #ff3355 50%, #c2002f 100%);
+    box-shadow: 0 0 9vmin rgba(255, 51, 85, 0.45), inset 0 -2vmin 4vmin rgba(80, 0, 20, 0.35), inset 0 2vmin 3vmin rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mic svg { width: 38vmin; height: 38vmin; filter: drop-shadow(0 1vmin 1.4vmin rgba(80,0,20,0.4)); }
+
+  /* ----- mono (notification) ----- */
+  .monochrome .bg { display: none; }
+  .monochrome .glyph, .monochrome .disc { background: none !important; color: #fff !important; -webkit-background-clip: border-box; filter: none !important; box-shadow: none !important; }
+</style>
+</head>
+<body>
+<div id="icon" class="icon">
+  <div class="bg"></div>
+  <div class="fg"><div class="art" id="art"></div></div>
+</div>
+<script>
+  const p = new URLSearchParams(location.search);
+  const v = p.get("v") || "kasavu";
+  const layer = p.get("layer") || "full";
+  const icon = document.getElementById("icon");
+  const art = document.getElementById("art");
+  icon.classList.add(v);
+  if (p.get("mono")) icon.classList.add("monochrome");
+
+  if (v === "mic") {
+    art.innerHTML = `<div class="disc"><svg viewBox="0 0 24 24"><path fill="#fff" d="M12 14a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></svg></div>`;
+  } else {
+    art.innerHTML = `<span class="glyph">യൂ</span>`;
+  }
+  if (p.get("pad")) art.style.transform = `scale(${p.get("pad")})`;
+  if (p.get("round")) icon.style.borderRadius = "22%";
+  if (layer === "bg") document.querySelector(".fg").remove();
+  if (layer === "fg") document.querySelector(".bg").remove();
+</script>
+</body>
+</html>
