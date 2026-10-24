@@ -207,14 +207,7 @@ function renderHome() {
   for (const row of feed.rows || []) {
     if (row.videos.length) homeView.appendChild(rowSection(row.title, row.videos.map(movieTile)));
   }
-  if (feed.actors?.length) {
-    const section = el("section", "row");
-    section.appendChild(el("h2", "row-title", MSG.rowActors));
-    const grid = el("div", "actor-grid");
-    feed.actors.forEach((a) => grid.appendChild(actorButton(a)));
-    section.appendChild(grid);
-    homeView.appendChild(section);
-  }
+  if (feed.actors?.length) homeView.appendChild(rowSection(MSG.rowActors, feed.actors.map(actorButton)));
 }
 
 async function loadFeed() {
