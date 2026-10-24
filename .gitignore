@@ -1,2 +1,9 @@
 .DS_Store
 .claude/
+# Android wrapper: never commit the signing key or build output
+*.keystore
+gradle-8.11.1/
+gradle-8.11.1-bin.zip
+twa/build/
+twa/app/build/
+twa/.gradle/

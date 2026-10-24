@@ -1,0 +1,37 @@
+# Refreshes data/feed.json (home screen rows).
+# Live news every 3 hours; movie rows once a day (first run after midnight IST).
+# Needs a repository secret named YT_API_KEY (Settings → Secrets and variables → Actions).
+name: Refresh home feed
+
+on:
+  schedule:
+    - cron: "0 */3 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Rebuild movie rows now"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency: feed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/build-feed.mjs ${{ inputs.force && '--force' || '' }}
+        env:
+          YT_API_KEY: ${{ secrets.YT_API_KEY }}
+      - name: Commit if changed
+        run: |
+          git config user.name "feed-bot"
+          git config user.email "feed-bot@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || { git commit -m "Refresh home feed" && git push; }
