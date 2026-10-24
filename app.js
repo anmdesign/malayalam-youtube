@@ -100,11 +100,30 @@ async function showSongs() {
     const res = await fetch("data/songs.json", { cache: "no-cache" });
     if (!res.ok) throw new Error("HTTP " + res.status);
     const data = await res.json();
-    if (history.state?.view === "songs") renderList(songsEl, shuffled(data.songs || []));
+    const songs = (data.songs || []).map((s) => ({ ...s, thumb: `https://i.ytimg.com/vi/${s.id}/hqdefault.jpg` }));
+    if (history.state?.view === "songs") renderSongs(shuffled(songs));
   } catch (err) {
     console.error("songs:", err);
     if (!songsEl.children.length) songsEl.appendChild(el("li", "status", navigator.onLine ? MSG.noSongs : MSG.offline));
   }
+}
+
+// The library has thousands of songs: add them 60 at a time as Dad scrolls
+const SONGS_PER_PAGE = 60;
+let songsObserver = null;
+
+function renderSongs(songs) {
+  songsObserver?.disconnect();
+  renderList(songsEl, songs.slice(0, SONGS_PER_PAGE));
+  let shown = SONGS_PER_PAGE;
+  songsObserver = new IntersectionObserver((entries) => {
+    if (!entries[0].isIntersecting || shown >= songs.length) return;
+    songsObserver.unobserve(entries[0].target);
+    renderList(songsEl, songs.slice(shown, shown + SONGS_PER_PAGE), true);
+    shown += SONGS_PER_PAGE;
+    songsObserver.observe(songsEl.lastElementChild);
+  }, { rootMargin: "1500px" });
+  if (songsEl.lastElementChild) songsObserver.observe(songsEl.lastElementChild);
 }
 
 window.addEventListener("popstate", () => (history.state?.view === "songs" ? setView("songs") : showHome()));
@@ -517,8 +536,8 @@ function parseDuration(iso) {
 // ============================================================
 // Result list (search results, actor movies, songs)
 // ============================================================
-function renderList(listEl, items) {
-  listEl.innerHTML = "";
+function renderList(listEl, items, append) {
+  if (!append) listEl.innerHTML = "";
   for (const v of items) {
     const li = document.createElement("li");
     const a = el("a", "card");
@@ -527,7 +546,7 @@ function renderList(listEl, items) {
 
     const body = el("div", "card-body");
     body.appendChild(el("h3", "card-title", v.title));
-    body.appendChild(el("p", "card-channel", v.channel));
+    body.appendChild(el("p", "card-channel", v.film ? `${v.film} (${v.year})` : v.channel));
     a.appendChild(body);
 
     li.appendChild(a);

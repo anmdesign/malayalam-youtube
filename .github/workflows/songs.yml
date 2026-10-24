@@ -1,0 +1,43 @@
+# Builds the fixed song library (data/songs.json) for the songs tab.
+# Runs once a day just after the YouTube quota resets (07:00 UTC) and continues
+# where it stopped, until every channel is read; after that it does nothing.
+name: Build song library
+
+on:
+  schedule:
+    - cron: "15 7 * * *"
+  workflow_dispatch:
+    inputs:
+      units:
+        description: "YouTube quota units to use (0 = only re-check against film years)"
+        default: "4000"
+
+permissions:
+  contents: write
+
+concurrency: feed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Skip if the library is complete
+        id: check
+        run: echo "done=$(node -e 'try{console.log(require("./data/songs-build.json").done===true)}catch{console.log(false)}')" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.done != 'true'
+        with:
+          node-version: 22
+      - run: node scripts/build-songs.mjs
+        if: steps.check.outputs.done != 'true'
+        env:
+          YT_API_KEY: ${{ secrets.YT_API_KEY }}
+          SONG_UNITS: ${{ inputs.units || '4000' }}
+      - name: Commit if changed
+        if: steps.check.outputs.done != 'true'
+        run: |
+          git config user.name "feed-bot"
+          git config user.email "feed-bot@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || { git commit -m "Build song library" && git pull --rebase && git push; }

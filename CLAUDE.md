@@ -10,7 +10,10 @@ Plain HTML/CSS/JS, no build step. Live at https://anmdesign.github.io/malayalam-
 - Search results are remembered on the phone for 3 days; when the API quota is out, the app
   opens the YouTube app's own search instead.
 - `scripts/build-feed.mjs` — builds `data/feed.json` (live news, 70s/80s/90s/comedy rows, actors)
-  and grows `data/songs.json` daily (`SONG_QUERIES`, 8 searches/day).
+- `scripts/build-songs.mjs` + `.github/workflows/songs.yml` — builds the fixed song library
+  `data/songs.json` once: reads old-song channels' uploads and keeps only titles naming a
+  1960–1989 film (Wikidata years). Resumes daily via `data/songs-build.json` until `done`, then
+  stops. No daily song refresh; the app shuffles the list on every open.
   Channel and actor lists are config at the top. Film years come from Wikidata.
 - `.github/workflows/feed.yml` — runs the builder every 3h (news) and once a day IST (movies).
   Uses the `YT_API_KEY` repo secret.
