@@ -13,7 +13,9 @@ Plain HTML/CSS/JS, no build step. Live at https://anmdesign.github.io/malayalam-
 - `scripts/build-songs.mjs` + `.github/workflows/songs.yml` — builds the fixed song library
   `data/songs.json` once: reads old-song channels' uploads and keeps only titles naming a
   1968–1989 film (Wikidata years). Manual workflow only (user doesn't want YouTube
-  quota spent on songs); progress in `data/songs-build.json`. No daily song refresh; the app shuffles the list on every open.
+  quota spent on songs); progress in `data/songs-build.json`. Ranked by views: top 100 most-watched
+  1968–79 (Prem Nazir era) songs first, then the rest (70s boosted 3x), cut to 1,500, duplicate
+  uploads removed. The app shuffles within each group of 100 on every open. No daily refresh.
   Channel and actor lists are config at the top. Film years come from Wikidata.
 - `.github/workflows/feed.yml` — runs the builder every 3h (news) and once a day IST (movies).
   Uses the `YT_API_KEY` repo secret.

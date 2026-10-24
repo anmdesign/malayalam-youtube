@@ -20,20 +20,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Skip if the library is complete
-        id: check
-        run: echo "done=$(node -e 'try{console.log(require("./data/songs-build.json").done===true)}catch{console.log(false)}')" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-node@v4
-        if: steps.check.outputs.done != 'true'
         with:
           node-version: 22
       - run: node scripts/build-songs.mjs
-        if: steps.check.outputs.done != 'true'
         env:
           YT_API_KEY: ${{ secrets.YT_API_KEY }}
           SONG_UNITS: ${{ inputs.units || '0' }}
       - name: Commit if changed
-        if: steps.check.outputs.done != 'true'
         run: |
           git config user.name "feed-bot"
           git config user.email "feed-bot@users.noreply.github.com"

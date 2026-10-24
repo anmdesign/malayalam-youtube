@@ -101,7 +101,7 @@ async function showSongs() {
     if (!res.ok) throw new Error("HTTP " + res.status);
     const data = await res.json();
     const songs = (data.songs || []).map((s) => ({ ...s, thumb: `https://i.ytimg.com/vi/${s.id}/hqdefault.jpg` }));
-    if (history.state?.view === "songs") renderSongs(shuffled(songs));
+    if (history.state?.view === "songs") renderSongs(shuffledInGroups(songs, 100));
   } catch (err) {
     console.error("songs:", err);
     if (!songsEl.children.length) songsEl.appendChild(el("li", "status", navigator.onLine ? MSG.noSongs : MSG.offline));
@@ -184,6 +184,14 @@ function shuffled(arr) {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+// Songs come most popular first: keep that order, but mix each group of 100
+// so every open shows different hits at the top
+function shuffledInGroups(arr, size) {
+  const out = [];
+  for (let i = 0; i < arr.length; i += size) out.push(...shuffled(arr.slice(i, i + size)));
+  return out;
 }
 
 function el(tag, className, text) {

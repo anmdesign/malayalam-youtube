@@ -31,6 +31,13 @@ const MAX_SECONDS = 12 * 60;    // longer is a jukebox or a whole film
 const MAX_PAGES_PER_CHANNEL = 400; // 20,000 uploads
 const MIN_CHANNEL_HITS = 3;     // a channel needs this many old-film songs in the searches to be read
 
+// Order of the songs tab: the most-watched Prem Nazir era songs first, then the
+// rest by views with that era boosted. The app shuffles within each group of 100.
+const LIBRARY_SIZE = 1500;
+const TOP_ERA_TO = 1979;         // 1968-1979 is "the Prem Nazir era" here
+const TOP_ERA_FIRST = 100;       // this many of its most-watched songs open the list
+const TOP_ERA_BOOST = 3;         // its songs count 3x their views in the rest of the list
+
 // Searches used once, to find the channels that upload old film songs
 const SEED_QUERIES = [
   "Prem Nazir old malayalam film songs",
@@ -202,6 +209,35 @@ const NEW_ERA = /suraj venjaramood|venjaramood|fahad|fahadh|dulquer|prithviraj|n
 const isSongTitle = (title) => !NOT_A_SONG.test(title) && !NEW_ERA.test(title) && !/deleted video|private video/i.test(title);
 
 // ============================================================
+// Ranking
+// ============================================================
+
+// The same song uploaded by several channels: "Kannum Kannum | Angadi | ..."
+// and "Kannum Kannum Thammil Video Song - Angadi (1980)" share song and film.
+function songKey(s) {
+  const name = loose(s.title.split(/[|｜\-–—(\[]/)[0].replace(NOISE, " ")).slice(0, 12);
+  return name + "/" + loose(s.film);
+}
+
+function rankSongs(songs) {
+  const best = new Map();
+  for (const s of songs) {
+    const k = songKey(s);
+    if (!best.has(k) || (s.views || 0) > (best.get(k).views || 0)) best.set(k, s);
+  }
+  const unique = [...best.values()];
+  const topEra = (s) => s.year <= TOP_ERA_TO;
+  const first = unique.filter(topEra).sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, TOP_ERA_FIRST);
+  const firstIds = new Set(first.map((s) => s.id));
+  const score = (s) => (s.views || 0) * (topEra(s) ? TOP_ERA_BOOST : 1);
+  const rest = unique.filter((s) => !firstIds.has(s.id)).sort((a, b) => score(b) - score(a));
+  console.log(`Ranking: ${songs.length} songs, ${unique.length} after removing duplicate uploads`);
+  // Cut to size only once every song has its view count
+  const ranked = [...first, ...rest];
+  return songs.every((s) => s.views != null) ? ranked.slice(0, LIBRARY_SIZE) : ranked;
+}
+
+// ============================================================
 
 async function main() {
   if (!KEY && BUDGET > 0) throw new Error("Set YT_API_KEY");
@@ -216,12 +252,21 @@ async function main() {
     const film = matchFilm(s.title, films);
     if (!film || !isSongTitle(s.title) || seen.has(s.id)) continue;
     seen.add(s.id);
-    songs.push({ id: s.id, title: s.title, channel: s.channel, film: film.name, year: film.year, duration: s.duration });
+    songs.push({ id: s.id, title: s.title, channel: s.channel, film: film.name, year: film.year, duration: s.duration, views: s.views });
   }
   console.log(`Kept ${songs.length} of ${store.songs.length} existing songs`);
 
   try {
-    // 1. Find the channels (once)
+    // 1. View counts for songs that don't have one yet (1 unit per 50)
+    const noViews = songs.filter((s) => s.views == null);
+    for (let i = 0; i < noViews.length; i += 50) {
+      const batch = noViews.slice(i, i + 50);
+      const data = await yt("videos", { part: "statistics", id: batch.map((s) => s.id).join(",") }, 1);
+      const views = new Map((data.items || []).map((it) => [it.id, +it.statistics.viewCount || 0]));
+      for (const s of batch) s.views = views.get(s.id) ?? 0;
+    }
+
+    // 2. Find the channels (once)
     if (!state.seeded && BUDGET > 0) {
       const hits = new Map(); // channelId -> { name, count }
       const candidates = [];
@@ -245,7 +290,7 @@ async function main() {
       console.log("Channels:", state.channels.map((c) => `${c.name} (${c.hits})`).join(", "));
     }
 
-    // 2. Read each channel's uploads, page by page
+    // 3. Read each channel's uploads, page by page
     for (const ch of state.channels.filter((c) => !c.done)) {
       const uploads = "UU" + ch.id.slice(2);
       let added = 0;
@@ -271,14 +316,16 @@ async function main() {
       console.log(`  ${ch.name}: +${added} songs (${ch.pages} pages)`);
     }
     state.done = state.seeded && state.channels.every((c) => c.done);
+
   } catch (e) {
     if (!(e instanceof OutOfBudget)) throw e;
     console.log("Stopped for today (quota budget used); the next run continues.");
   }
 
-  await fs.writeFile(SONGS_PATH, JSON.stringify({ updated: todayIST(), songs }) + "\n");
+  const library = rankSongs(songs);
+  await fs.writeFile(SONGS_PATH, JSON.stringify({ updated: todayIST(), songs: library }) + "\n");
   await fs.writeFile(STATE_PATH, JSON.stringify(state, null, 1) + "\n");
-  console.log(`Wrote ${songs.length} songs (${used} quota units used)${state.done ? " — library complete" : ""}`);
+  console.log(`Wrote ${library.length} of ${songs.length} songs (${used} quota units used)${state.done ? " — library complete" : ""}`);
 }
 
 main().catch((e) => {
