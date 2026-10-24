@@ -21,7 +21,7 @@ const MSG = {
   noResults:     "ഫലങ്ങൾ കിട്ടിയില്ല. വീണ്ടും പറയൂ.",
   noApiKey:      "API key സജ്ജമാക്കിയിട്ടില്ല",
   searchFailed:  "തിരയൽ പരാജയപ്പെട്ടു. വീണ്ടും ശ്രമിക്കൂ.",
-  quotaExceeded: "ഇന്നത്തെ തിരയൽ പരിധി കഴിഞ്ഞു. നാളെ വീണ്ടും ശ്രമിക്കൂ.",
+  quotaExceeded: "ഇന്നത്തെ തിരയൽ പരിധി കഴിഞ്ഞു. ഉച്ചയ്ക്ക് ശേഷം വീണ്ടും ശ്രമിക്കൂ. താഴെയുള്ള സിനിമകൾ കാണാം.",
   offline:       "ഇന്റർനെറ്റ് ഇല്ല. കണക്ഷൻ നോക്കൂ.",
   micUnsupported:"ഈ ബ്രൗസറിൽ മൈക്ക് ലഭ്യമല്ല",
   heard:         "കേട്ടത്:",
@@ -420,7 +420,9 @@ async function ytApi(endpoint, params) {
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
     const err = new Error("HTTP " + res.status);
-    err.quota = (data.error?.errors || []).some((e) => /quota/i.test(e.reason));
+    // Daily limit used up: YouTube answers 403 quotaExceeded or 429 "Quota exceeded ..."
+    err.quota = res.status === 429 || /quota/i.test(data.error?.message || "") ||
+      (data.error?.errors || []).some((e) => /quota/i.test(e.reason));
     throw err;
   }
   return data;
