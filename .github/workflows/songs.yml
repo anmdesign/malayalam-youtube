@@ -1,16 +1,14 @@
 # Builds the fixed song library (data/songs.json) for the songs tab.
-# Runs once a day just after the YouTube quota resets (07:00 UTC) and continues
-# where it stopped, until every channel is read; after that it does nothing.
+# Manual only: the library is built and then left alone. Run with units 0 to
+# re-check the list against Wikidata film years without using YouTube quota.
 name: Build song library
 
 on:
-  schedule:
-    - cron: "15 7 * * *"
   workflow_dispatch:
     inputs:
       units:
         description: "YouTube quota units to use (0 = only re-check against film years)"
-        default: "4000"
+        default: "0"
 
 permissions:
   contents: write
@@ -33,7 +31,7 @@ jobs:
         if: steps.check.outputs.done != 'true'
         env:
           YT_API_KEY: ${{ secrets.YT_API_KEY }}
-          SONG_UNITS: ${{ inputs.units || '4000' }}
+          SONG_UNITS: ${{ inputs.units || '0' }}
       - name: Commit if changed
         if: steps.check.outputs.done != 'true'
         run: |

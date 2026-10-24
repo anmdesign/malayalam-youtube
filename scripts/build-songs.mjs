@@ -131,8 +131,11 @@ async function loadFilms() {
       const key = loose(n);
       if (key.length < 4) continue;
       const prev = films.get(key);
-      if (!prev) films.set(key, { name, year, era });
-      else if (prev.era !== era) prev.era = "both";
+      if (!prev) films.set(key, { name, year, era, years: [year] });
+      else {
+        prev.years.push(year);
+        if (prev.era !== era) prev.era = "both";
+      }
     }
   }
   console.log(`Wikidata: ${rows.length} Malayalam films, ${[...films.values()].filter((f) => f.era === "old").length} old names`);
@@ -152,8 +155,13 @@ function matchFilm(title, films) {
     const f = films.get(key);
     if (!f) continue;
     if (f.era === "new") return null;
-    if (f.era === "both" && !years.length) return null; // old film with a later remake: needs a year to tell
-    if (f.era !== "older") hit ||= f;
+    if (f.era === "both") {
+      // Same name used in different eras (e.g. a later remake): only a year in
+      // the title naming the old film tells which one this is
+      const y = years.find((y) => y >= OLD_FROM && y <= OLD_TO && f.years.some((fy) => Math.abs(fy - y) <= 1));
+      if (!y) return null;
+      hit ||= { name: f.name, year: y };
+    } else if (f.era === "old") hit ||= f;
   }
   return hit;
 }
