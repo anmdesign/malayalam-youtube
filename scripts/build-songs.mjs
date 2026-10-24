@@ -195,7 +195,11 @@ async function checkVideos(candidates, songs, seen) {
   }
 }
 
-const isSongTitle = (title) => !NOT_A_SONG.test(title) && !/deleted video|private video/i.test(title);
+// People who only worked after the 80s: a title naming them is a newer song
+// from a film that shares its name with an old one
+const NEW_ERA = /suraj venjaramood|venjaramood|fahad|fahadh|dulquer|prithviraj|nivin|tovino|kunchacko|jayasurya|asif ali|kavya madhavan|indrajith|unni mukundan|vineeth sreenivasan|nazriya|manju warrier|namitha pramod|anu sithara|aishwarya lekshmi|shane nigam|soubin|basil joseph|sushin|gopi sundar|deepak dev|bijibal|shaan rahman|alphons|vidyasagar|m jayachandran|rex vijayan|vijay yesudas|shreya ghoshal|sithara krishnakumar|haricharan|najim arshad|rimi tomy|jassie gift|aparna balamurali|mamta mohandas|meera jasmine|navya nair|anoop menon|lal jose|dileep|kalabhavan mani|christo xavier|vaisakh sugunan|aju varghese|gireesh puthenchery|gireesh puthanchery|jyotsna|jyolsna|harisankar|vaikom vijayalakshmi/i;
+
+const isSongTitle = (title) => !NOT_A_SONG.test(title) && !NEW_ERA.test(title) && !/deleted video|private video/i.test(title);
 
 // ============================================================
 
