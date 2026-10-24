@@ -14,7 +14,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
 
-  <link rel="stylesheet" href="style.css?v=7" />
+  <link rel="stylesheet" href="style.css?v=8" />
 </head>
 <body>
   <header class="app-header">
@@ -24,11 +24,14 @@
       </svg>
       തിരികെ
     </button>
-    <h1 class="app-title">ഹലോ മണിയപ്പൻ</h1>
+    <nav id="tabs" class="tabs">
+      <button id="tabYoutube" class="tab active" type="button">യൂട്യൂബ്</button>
+      <button id="tabSongs" class="tab" type="button">പാട്ടുകൾ</button>
+    </nav>
   </header>
 
   <main class="app-main">
-    <section class="hero">
+    <section id="hero" class="hero">
       <button id="micButton" class="mic-button" aria-label="സംസാരിക്കൂ">
         <svg viewBox="0 0 24 24" width="52" height="52" aria-hidden="true">
           <path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/>
@@ -64,9 +67,15 @@
       <h2 id="listTitle" class="list-title"></h2>
       <ul id="results" class="results" aria-label="Search results"></ul>
     </section>
+
+    <!-- Songs tab: 70s and 80s film songs (from data/songs.json) -->
+    <section id="songsView" class="hidden">
+      <h2 class="list-title">70-കളിലെയും 80-കളിലെയും സിനിമാ പാട്ടുകൾ</h2>
+      <ul id="songs" class="results"></ul>
+    </section>
   </main>
 
-  <script src="app.js?v=7"></script>
+  <script src="app.js?v=8"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {

@@ -71,12 +71,30 @@ body {
   transform: scale(0.96);
 }
 
-.app-title {
-  margin: 0;
-  font-size: 24px;
+/* Two big tabs: YouTube and songs */
+.tabs {
+  display: flex;
+  flex: 1;
+  gap: 8px;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+}
+.tab {
+  flex: 1;
+  min-height: 52px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 21px;
   font-weight: 800;
-  letter-spacing: -0.02em;
-  color: var(--text);
+  cursor: pointer;
+}
+.tab.active {
+  background: var(--text);
+  color: var(--bg);
 }
 
 .app-main {

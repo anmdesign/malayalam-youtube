@@ -5,8 +5,12 @@ Plain HTML/CSS/JS, no build step. Live at https://anmdesign.github.io/malayalam-
 (GitHub Pages from `main`, root). Pushing to `main` updates Dad's phone app automatically.
 
 ## Pieces
-- `index.html`, `style.css`, `app.js` — the app. Mic first, then home rows from `data/feed.json`.
-- `scripts/build-feed.mjs` — builds `data/feed.json` (live news, 70s/80s/90s/comedy rows, actors).
+- `index.html`, `style.css`, `app.js` — the app. Two tabs: യൂട്യൂബ് (mic, then home rows from
+  `data/feed.json`) and പാട്ടുകൾ (long list of 70s/80s film songs from `data/songs.json`).
+- Search results are remembered on the phone for 3 days; when the API quota is out, the app
+  opens the YouTube app's own search instead.
+- `scripts/build-feed.mjs` — builds `data/feed.json` (live news, 70s/80s/90s/comedy rows, actors)
+  and grows `data/songs.json` daily (`SONG_QUERIES`, 8 searches/day).
   Channel and actor lists are config at the top. Film years come from Wikidata.
 - `.github/workflows/feed.yml` — runs the builder every 3h (news) and once a day IST (movies).
   Uses the `YT_API_KEY` repo secret.
@@ -15,7 +19,8 @@ Plain HTML/CSS/JS, no build step. Live at https://anmdesign.github.io/malayalam-
 - Asset links for full-screen app: repo `anmdesign/anmdesign.github.io`, `.well-known/assetlinks.json`.
 
 ## Rules of thumb
-- YouTube quota is ~100 searches/day per key, shared by Dad's voice search and the feed job.
+- YouTube quota is ~100 searches/day per key. Dad's voice search uses the key in `app.js`; the feed
+  job uses a separate key (`YT_API_KEY` secret, its own Google Cloud project). Keep it to these two.
   Don't run `build-feed.mjs --force` repeatedly; use `MAX_NEW_LOOKUPS=0` to rebuild rows from
   `data/match-cache.json` without new searches.
 - After changing `app.js` or `style.css`, bump the `?v=N` on both in `index.html`.

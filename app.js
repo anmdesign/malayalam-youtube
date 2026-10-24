@@ -28,6 +28,7 @@ const MSG = {
   live:          "തത്സമയം",
   rowNews:       "🔴 തത്സമയ വാർത്ത",
   rowActors:     "നടന്മാർ",
+  noSongs:       "പാട്ടുകൾ നാളെ മുതൽ ഇവിടെ കാണാം.",
   moviesOf:      "സിനിമകൾ",
 };
 
@@ -41,6 +42,12 @@ const listView    = document.getElementById("listView");
 const listTitle   = document.getElementById("listTitle");
 const resultsEl   = document.getElementById("results");
 const backButton  = document.getElementById("backButton");
+const tabs        = document.getElementById("tabs");
+const tabYoutube  = document.getElementById("tabYoutube");
+const tabSongs    = document.getElementById("tabSongs");
+const hero        = document.getElementById("hero");
+const songsView   = document.getElementById("songsView");
+const songsEl     = document.getElementById("songs");
 
 let feed = null;
 
@@ -53,31 +60,57 @@ function setStatus(text, mode) {
 }
 
 // ============================================================
-// Views: home (rows) and list (search results / actor movies).
-// The list view pushes a history entry so the phone's back button
-// returns to home instead of closing the app.
+// Views: home (rows), list (search results / actor movies) and songs
+// (the second tab). List and songs push a history entry so the phone's
+// back button returns to home instead of closing the app.
 // ============================================================
-function showList(title, items) {
-  listTitle.textContent = title;
-  renderResults(items);
-  if (!history.state || history.state.view !== "list") {
-    history.pushState({ view: "list" }, "");
-  }
-  homeView.classList.add("hidden");
-  listView.classList.remove("hidden");
-  backButton.classList.remove("hidden");
+function setView(view) {
+  hero.classList.toggle("hidden", view === "songs");
+  homeView.classList.toggle("hidden", view !== "home");
+  listView.classList.toggle("hidden", view !== "list");
+  songsView.classList.toggle("hidden", view !== "songs");
+  backButton.classList.toggle("hidden", view !== "list");
+  tabs.classList.toggle("hidden", view === "list");
+  tabYoutube.classList.toggle("active", view !== "songs");
+  tabSongs.classList.toggle("active", view === "songs");
   window.scrollTo(0, 0);
 }
 
+function pushView(view) {
+  if (history.state?.view === "home") history.pushState({ view }, "");
+  else history.replaceState({ view }, "");
+}
+
+function showList(title, items) {
+  listTitle.textContent = title;
+  renderList(resultsEl, items);
+  pushView("list");
+  setView("list");
+}
+
 function showHome() {
-  listView.classList.add("hidden");
-  homeView.classList.remove("hidden");
-  backButton.classList.add("hidden");
+  setView("home");
   setStatus(MSG.emptyHint);
 }
 
-window.addEventListener("popstate", showHome);
+async function showSongs() {
+  pushView("songs");
+  setView("songs");
+  try {
+    const res = await fetch("data/songs.json", { cache: "no-cache" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    if (history.state?.view === "songs") renderList(songsEl, shuffled(data.songs || []));
+  } catch (err) {
+    console.error("songs:", err);
+    if (!songsEl.children.length) songsEl.appendChild(el("li", "status", navigator.onLine ? MSG.noSongs : MSG.offline));
+  }
+}
+
+window.addEventListener("popstate", () => (history.state?.view === "songs" ? setView("songs") : showHome()));
 backButton.addEventListener("click", () => history.back());
+tabSongs.addEventListener("click", () => { if (history.state?.view !== "songs") showSongs(); });
+tabYoutube.addEventListener("click", () => { if (history.state?.view === "songs") history.back(); });
 
 // ============================================================
 // Opening videos: on Android, go straight to the YouTube app
@@ -429,6 +462,8 @@ function openYouTubeSearch(query) {
   const link = youtubeLink("results?search_query=" + encodeURIComponent(query));
   if (link.newTab) window.open(link.href, "_blank", "noopener");
   else location.href = link.href;
+  // The YouTube app is now open; put the mic hint back for when Dad returns
+  setTimeout(() => setStatus(MSG.emptyHint), 2000);
 }
 
 // ----- Search memory -----
@@ -480,10 +515,10 @@ function parseDuration(iso) {
 }
 
 // ============================================================
-// Result list (search results and actor movies)
+// Result list (search results, actor movies, songs)
 // ============================================================
-function renderResults(items) {
-  resultsEl.innerHTML = "";
+function renderList(listEl, items) {
+  listEl.innerHTML = "";
   for (const v of items) {
     const li = document.createElement("li");
     const a = el("a", "card");
@@ -496,7 +531,7 @@ function renderResults(items) {
     a.appendChild(body);
 
     li.appendChild(a);
-    resultsEl.appendChild(li);
+    listEl.appendChild(li);
   }
 }
 

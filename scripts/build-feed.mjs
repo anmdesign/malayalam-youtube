@@ -3,7 +3,8 @@
 // ------------------------------------------------------------
 // Runs from GitHub Actions (.github/workflows/feed.yml):
 //   - every run:        refresh the live news row
-//   - once a day (IST): rebuild the movie rows (70s, 80s, 90s, comedy) and a few actor lists
+//   - once a day (IST): rebuild the movie rows (70s, 80s, 90s, comedy), a few actor lists,
+//                       and add new songs to data/songs.json (the songs tab)
 //
 // Usage:  YT_API_KEY=... node scripts/build-feed.mjs [--force]
 //   --force  rebuild the movie rows even if they were built today
@@ -67,6 +68,54 @@ const ACTORS = [
   { key: "sureshgopi", qid: "Q3530125",  name: "Suresh Gopi",       ml: "സുരേഷ് ഗോപി" },
   { key: "dileep",     qid: "Q5276736",  name: "Dileep",            ml: "ദിലീപ്" },
 ];
+// Songs tab: 70s and 80s Malayalam film songs, kept in data/songs.json.
+// A few of these searches run each day and new songs are added to the list,
+// so it keeps growing. Each search costs 100 quota units.
+const SONG_QUERIES = [
+  "evergreen malayalam film songs 1970s",
+  "evergreen malayalam film songs 1980s",
+  "old malayalam movie songs 70s",
+  "old malayalam movie songs 80s",
+  "Yesudas 1970s malayalam film songs",
+  "Yesudas 1980s malayalam film songs",
+  "P Jayachandran 1970s malayalam film songs",
+  "S Janaki 1970s malayalam film songs",
+  "S Janaki 1980s malayalam film songs",
+  "P Susheela malayalam film songs 1970s",
+  "Vani Jairam malayalam film songs",
+  "K S Chithra 1980s malayalam film songs",
+  "Brahmanandan malayalam film songs",
+  "Unni Menon 1980s malayalam film songs",
+  "G Venugopal 1980s malayalam film songs",
+  "G Devarajan malayalam film songs 1970s",
+  "Salil Chowdhury malayalam songs",
+  "M K Arjunan malayalam film songs",
+  "Shyam malayalam film songs 1980s",
+  "Johnson master 1980s malayalam songs",
+  "Raveendran master 1980s malayalam songs",
+  "Ilaiyaraaja malayalam songs 1980s",
+  "M S Viswanathan malayalam film songs",
+  "K J Joy malayalam film songs",
+  "A T Ummer malayalam film songs",
+  "Kannur Rajan malayalam film songs",
+  "Vayalar Devarajan songs",
+  "Sreekumaran Thampi film songs 1970s",
+  "O N V Kurup 1980s film songs",
+  "Bichu Thirumala 1980s songs",
+  "Prem Nazir film songs",
+  "Jayan film songs",
+  "Madhu Sheela film songs",
+  "Mohanlal 1980s film songs",
+  "Mammootty 1980s film songs",
+  "Sukumaran film songs 1970s",
+];
+const SONG_SEARCHES_PER_DAY = 8;
+const SONG_POOL_MAX = 1000;
+const SONG_MIN_SECONDS = 120;      // shorter is a clip or a Short
+const SONG_MAX_SECONDS = 12 * 60;  // longer is a jukebox or a whole film
+const NOT_A_SONG = /#shorts|karaoke|cover|remix|reprise|unplugged|instrumental|flute|violin|keyboard|guitar|whatsapp|status|trailer|teaser|reaction|tutorial|class|full movie|jukebox|non ?stop|mashup|medley/i;
+const SONGS_PATH = new URL("../data/songs.json", import.meta.url);
+
 const ACTOR_MAX_YEAR = 2016;
 const ACTOR_REFRESH_DAYS = 7;    // each actor's list is rebuilt about once a week...
 const ACTOR_REFRESH_PER_DAY = 3; // ...a few per day, to spread the quota (new actors are always built)
@@ -318,6 +367,53 @@ async function buildActor(actor) {
 }
 
 // ============================================================
+// Songs (70s and 80s film songs)
+// ============================================================
+
+// A year in the title outside 1965-1989 means a newer song or a new upload of
+// an old one with a remix, so it is left out.
+const SONG_YEARS = /\b(19[0-9]\d|20[0-4]\d)\b/g;
+const songYearOk = (title) => (title.match(SONG_YEARS) || []).every((y) => y >= 1965 && y <= 1989);
+
+async function buildSongs(today) {
+  const store = await readJson(SONGS_PATH, { next: 0, songs: [] });
+
+  // Recheck the songs we already have (1 unit per 50): drop deleted or private ones
+  const known = await videoDetails(store.songs.map((s) => s.id));
+  const songs = store.songs.filter((s) => known.has(s.id));
+  const seen = new Set(songs.map((s) => s.id));
+
+  // Today's searches: the next few queries in the list, wrapping around
+  let added = 0;
+  const found = [];
+  for (let i = 0; i < SONG_SEARCHES_PER_DAY; i++) {
+    const q = SONG_QUERIES[(store.next + i) % SONG_QUERIES.length];
+    const s = await yt("search", { part: "snippet", type: "video", maxResults: "50", regionCode: "IN", relevanceLanguage: "ml", q });
+    for (const it of s.items || []) {
+      const id = it.id?.videoId;
+      if (id && !seen.has(id)) { seen.add(id); found.push(id); }
+    }
+  }
+  store.next = (store.next + SONG_SEARCHES_PER_DAY) % SONG_QUERIES.length;
+
+  const details = await videoDetails(found);
+  for (const id of found) {
+    const item = details.get(id);
+    if (!item || item.snippet.liveBroadcastContent !== "none") continue;
+    const card = toCard(item);
+    if (card.duration < SONG_MIN_SECONDS || card.duration > SONG_MAX_SECONDS) continue;
+    if (NOT_A_SONG.test(card.title) || !songYearOk(card.title)) continue;
+    songs.unshift(card);
+    added++;
+  }
+
+  store.songs = songs.slice(0, SONG_POOL_MAX);
+  store.updated = today;
+  await fs.writeFile(SONGS_PATH, JSON.stringify(store, null, 1) + "\n");
+  console.log(`  songs: ${store.songs.length} (${added} new)`);
+}
+
+// ============================================================
 
 async function main() {
   if (!KEY) throw new Error("Set YT_API_KEY");
@@ -355,6 +451,9 @@ async function main() {
       const old = prev.get(a.key);
       feed.actors.push(rebuild ? await buildActor(a) : { ...old, name: a.ml, videos: old.videos.filter(isFullFilm) });
     }
+
+    console.log("Songs...");
+    await buildSongs(today);
 
     feed.moviesDate = today;
     await fs.writeFile(CACHE_PATH, JSON.stringify(cache, null, 1) + "\n");
