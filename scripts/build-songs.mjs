@@ -1,5 +1,5 @@
 // ============================================================
-// Builds data/songs.json: a fixed library of 1960s-80s Malayalam film songs
+// Builds data/songs.json: a fixed library of 1968-1989 Malayalam film songs
 // for the songs tab. Built once (over a few days, because of the YouTube
 // quota), then left alone; the app shuffles it every time it opens.
 // ------------------------------------------------------------
@@ -7,7 +7,7 @@
 //   1. Wikidata gives every Malayalam film with its real release year.
 //   2. A few YouTube searches find the channels that upload old film songs.
 //   3. Those channels' full upload lists are read (1 quota unit per 50 videos).
-//   4. A video is kept only if its title names a film released 1960-1989,
+//   4. A video is kept only if its title names a film released 1968-1989,
 //      names no later film, and is the length of a single song.
 //
 // Runs from GitHub Actions (.github/workflows/songs.yml).
@@ -25,7 +25,7 @@ const BUDGET = +(process.env.SONG_UNITS ?? 4000);
 const SONGS_PATH = new URL("../data/songs.json", import.meta.url);
 const STATE_PATH = new URL("../data/songs-build.json", import.meta.url);
 
-const OLD_FROM = 1960, OLD_TO = 1989;
+const OLD_FROM = 1968, OLD_TO = 1989;
 const MIN_SECONDS = 120;        // shorter is a clip or a Short
 const MAX_SECONDS = 12 * 60;    // longer is a jukebox or a whole film
 const MAX_PAGES_PER_CHANNEL = 400; // 20,000 uploads
@@ -111,7 +111,7 @@ function loose(s) {
 // Words that sit next to the film name in titles: "Angadi Movie Song HD"
 const NOISE = /\b(video|songs?|full|hd|4k|\d+p|malayalam|movies?|films?|old|evergreen|super ?hits?|hits?|remastered|official|lyrical|lyrics|audio|from|the|evergreen|classic|nostalgia|nostalgic|ever ?green|all ?time|best|of|ft|feat|starring)\b|\d+/gi;
 
-// Film names, by loose key. Old = released 1960-1989; new = released later.
+// Film names, by loose key. Old = released 1968-1989; new = released later.
 // A name used for both an old film and a later remake is "both".
 async function loadFilms() {
   const rows = await sparql(`
@@ -139,7 +139,7 @@ async function loadFilms() {
   return films;
 }
 
-// The film a song title names, if it is a 1960-1989 film and nothing later
+// The film a song title names, if it is a 1968-1989 film and nothing later
 function matchFilm(title, films) {
   const years = (title.match(/\b(19\d\d|20\d\d)\b/g) || []).map(Number);
   if (years.some((y) => y < OLD_FROM - 5 || y > OLD_TO)) return null;

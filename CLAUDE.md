@@ -12,7 +12,7 @@ Plain HTML/CSS/JS, no build step. Live at https://anmdesign.github.io/malayalam-
 - `scripts/build-feed.mjs` — builds `data/feed.json` (live news, 70s/80s/90s/comedy rows, actors)
 - `scripts/build-songs.mjs` + `.github/workflows/songs.yml` — builds the fixed song library
   `data/songs.json` once: reads old-song channels' uploads and keeps only titles naming a
-  1960–1989 film (Wikidata years). Resumes daily via `data/songs-build.json` until `done`, then
+  1968–1989 film (Wikidata years). Resumes daily via `data/songs-build.json` until `done`, then
   stops. No daily song refresh; the app shuffles the list on every open.
   Channel and actor lists are config at the top. Film years come from Wikidata.
 - `.github/workflows/feed.yml` — runs the builder every 3h (news) and once a day IST (movies).
