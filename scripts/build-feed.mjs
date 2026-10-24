@@ -375,12 +375,32 @@ async function buildActor(actor) {
 const SONG_YEARS = /\b(19[0-9]\d|20[0-4]\d)\b/g;
 const songYearOk = (title) => (title.match(SONG_YEARS) || []).every((y) => y >= 1965 && y <= 1989);
 
+// Film names from Wikidata: a title naming a film released after 1989 (and no
+// older film) is a newer song, e.g. "Azhakadalinte | Chanthupottu".
+async function newFilmCheck() {
+  const names = async (where) => new Set((await wikidataFilms(where)).map((f) => norm(f.label)).filter((t) => t.trim().length >= 6));
+  const [oldNames, newNames] = await Promise.all([
+    names("FILTER(YEAR(?d) >= 1960 && YEAR(?d) <= 1989)"),
+    names("FILTER(YEAR(?d) >= 1990)"),
+  ]);
+  for (const n of oldNames) newNames.delete(n); // same name used again later: keep
+  const newList = [...newNames], oldList = [...oldNames];
+  return (title) => {
+    const t = norm(title);
+    return newList.some((n) => t.includes(n)) && !oldList.some((n) => t.includes(n));
+  };
+}
+
 async function buildSongs(today) {
   const store = await readJson(SONGS_PATH, { next: 0, songs: [] });
+  const fromNewFilm = await newFilmCheck().catch((e) => {
+    console.log("  film years unavailable today:", e.message);
+    return () => false;
+  });
 
   // Recheck the songs we already have (1 unit per 50): drop deleted or private ones
   const known = await videoDetails(store.songs.map((s) => s.id));
-  const songs = store.songs.filter((s) => known.has(s.id));
+  const songs = store.songs.filter((s) => known.has(s.id) && !fromNewFilm(s.title));
   const seen = new Set(songs.map((s) => s.id));
 
   // Today's searches: the next few queries in the list, wrapping around
@@ -402,7 +422,7 @@ async function buildSongs(today) {
     if (!item || item.snippet.liveBroadcastContent !== "none") continue;
     const card = toCard(item);
     if (card.duration < SONG_MIN_SECONDS || card.duration > SONG_MAX_SECONDS) continue;
-    if (NOT_A_SONG.test(card.title) || !songYearOk(card.title)) continue;
+    if (NOT_A_SONG.test(card.title) || !songYearOk(card.title) || fromNewFilm(card.title)) continue;
     songs.unshift(card);
     added++;
   }
