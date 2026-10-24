@@ -27,8 +27,6 @@ const MSG = {
   heard:         "കേട്ടത്:",
   live:          "തത്സമയം",
   rowNews:       "🔴 തത്സമയ വാർത്ത",
-  rowOld:        "പഴയ സിനിമകൾ",
-  rowComedy:     "കോമഡി സിനിമകൾ",
   rowActors:     "നടന്മാർ",
   moviesOf:      "സിനിമകൾ",
 };
@@ -187,10 +185,17 @@ function movieTile(v) {
 function actorButton(actor) {
   const b = el("button", "actor");
   b.type = "button";
-  const img = el("img", "actor-photo");
-  img.src = actor.photo || "icons/icon-192.png";
-  img.alt = "";
-  b.appendChild(img);
+  if (actor.photo) {
+    const img = el("img", "actor-photo");
+    img.src = actor.photo;
+    img.alt = "";
+    img.loading = "lazy";
+    b.appendChild(img);
+  } else {
+    // No photo on Wikidata: show the first Malayalam letter instead
+    const first = [...new Intl.Segmenter("ml", { granularity: "grapheme" }).segment(actor.name)][0].segment;
+    b.appendChild(el("span", "actor-photo actor-initial", first));
+  }
   b.appendChild(el("span", "actor-name", actor.name));
   b.addEventListener("click", () => showList(`${actor.name} ${MSG.moviesOf}`, actor.videos));
   return b;
@@ -199,8 +204,9 @@ function actorButton(actor) {
 function renderHome() {
   homeView.innerHTML = "";
   if (feed.news?.length)   homeView.appendChild(rowSection(MSG.rowNews, feed.news.map(newsTile)));
-  if (feed.old?.length)    homeView.appendChild(rowSection(MSG.rowOld, feed.old.map(movieTile)));
-  if (feed.comedy?.length) homeView.appendChild(rowSection(MSG.rowComedy, feed.comedy.map(movieTile)));
+  for (const row of feed.rows || []) {
+    if (row.videos.length) homeView.appendChild(rowSection(row.title, row.videos.map(movieTile)));
+  }
   if (feed.actors?.length) {
     const section = el("section", "row");
     section.appendChild(el("h2", "row-title", MSG.rowActors));

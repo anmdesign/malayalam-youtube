@@ -3,12 +3,12 @@
 // ------------------------------------------------------------
 // Runs from GitHub Actions (.github/workflows/feed.yml):
 //   - every run:        refresh the live news row
-//   - once a day (IST): rebuild old movies, comedy movies, actor lists
+//   - once a day (IST): rebuild the movie rows (70s, 80s, 90s, comedy) and a few actor lists
 //
 // Usage:  YT_API_KEY=... node scripts/build-feed.mjs [--force]
 //   --force  rebuild the movie rows even if they were built today
 //
-// Movie titles and years come from Wikidata, so "old" and "before 2017"
+// Movie titles and years come from Wikidata, so decades and "before 2017"
 // are real release years, not YouTube upload dates. Each film is then
 // looked up on YouTube once; the answer is remembered in
 // data/match-cache.json so later days cost almost no API quota.
@@ -37,20 +37,42 @@ const NEWS_CHANNELS = [
   { id: "UCDM528eqIJElfflkvfT-MuQ", name: "ജയ്ഹിന്ദ് ന്യൂസ്" },
 ];
 
-const OLD_MOVIES = { fromYear: 1960, toYear: 2000 };
-const COMEDY_MAX_YEAR = 2016;
-// Wikidata genres: comedy film, comedy-drama, romantic comedy
-const COMEDY_GENRES = ["wd:Q157443", "wd:Q859369", "wd:Q860626"];
+// Movie rows, in display order. `where` is a Wikidata filter on ?film / ?d (release date).
+// Comedy genres: comedy film, comedy-drama, romantic comedy.
+const decade = (from) => `FILTER(YEAR(?d) >= ${from} && YEAR(?d) <= ${from + 9})`;
+const MOVIE_ROWS = [
+  { key: "70s",    title: "70-കളിലെ സിനിമകൾ", where: decade(1970) },
+  { key: "80s",    title: "80-കളിലെ സിനിമകൾ", where: decade(1980) },
+  { key: "90s",    title: "90-കളിലെ സിനിമകൾ", where: decade(1990) },
+  { key: "comedy", title: "കോമഡി സിനിമകൾ",
+    where: `?film wdt:P136 ?g. VALUES ?g { wd:Q157443 wd:Q859369 wd:Q860626 } FILTER(YEAR(?d) <= 2016)` },
+];
 
-// Actor buttons. qid = Wikidata id, used for photo and the 2016 cut-off.
+// Actor buttons, in display order. qid = Wikidata id, used for photo and the 2016 cut-off.
 const ACTORS = [
-  { key: "premnazir", qid: "Q2735277", name: "Prem Nazir", ml: "പ്രേം നസീർ" },
-  { key: "mohanlal",  qid: "Q2050534", name: "Mohanlal",   ml: "മോഹൻലാൽ" },
+  { key: "mohanlal",   qid: "Q2050534",  name: "Mohanlal",          ml: "മോഹൻലാൽ" },
+  { key: "mammootty",  qid: "Q2721855",  name: "Mammootty",         ml: "മമ്മൂട്ടി" },
+  { key: "premnazir",  qid: "Q2735277",  name: "Prem Nazir",        ml: "പ്രേം നസീർ" },
+  { key: "sathyan",    qid: "Q7426186",  name: "Sathyan",           ml: "സത്യൻ" },
+  { key: "madhu",      qid: "Q277417",   name: "Madhu",             ml: "മധു" },
+  { key: "jayan",      qid: "Q6167522",  name: "Jayan",             ml: "ജയൻ" },
+  { key: "sukumaran",  qid: "Q7635921",  name: "Sukumaran",         ml: "സുകുമാരൻ" },
+  { key: "thilakan",   qid: "Q3520698",  name: "Thilakan",          ml: "തിലകൻ" },
+  { key: "nedumudi",   qid: "Q12072044", name: "Nedumudi Venu",     ml: "നെടുമുടി വേണു" },
+  { key: "jagathy",    qid: "Q6122250",  name: "Jagathy Sreekumar", ml: "ജഗതി" },
+  { key: "sreenivasan", qid: "Q7585727", name: "Sreenivasan",       ml: "ശ്രീനിവാസൻ" },
+  { key: "innocent",   qid: "Q6035995",  name: "Innocent",          ml: "ഇന്നസെന്റ്" },
+  { key: "mukesh",     qid: "Q277422",   name: "Mukesh",            ml: "മുകേഷ്" },
+  { key: "jayaram",    qid: "Q3522919",  name: "Jayaram",           ml: "ജയറാം" },
+  { key: "sureshgopi", qid: "Q3530125",  name: "Suresh Gopi",       ml: "സുരേഷ് ഗോപി" },
+  { key: "dileep",     qid: "Q5276736",  name: "Dileep",            ml: "ദിലീപ്" },
 ];
 const ACTOR_MAX_YEAR = 2016;
+const ACTOR_REFRESH_DAYS = 7;    // each actor's list is rebuilt about once a week...
+const ACTOR_REFRESH_PER_DAY = 3; // ...a few per day, to spread the quota (new actors are always built)
 
 const ROW_SIZE = 15;             // movies per row
-const MAX_NEW_LOOKUPS = 15;      // YouTube searches per row per day (100 quota units each)
+const MAX_NEW_LOOKUPS = 8;       // YouTube searches per row per day (100 quota units each)
 const MIN_MOVIE_MINUTES = 60;    // anything shorter is a clip, not a film
 const CACHE_RECHECK_DAYS = 60;   // retry films that weren't on YouTube after this long
 
@@ -266,16 +288,11 @@ async function buildActor(actor) {
   const photo = photoRows[0] ? photoRows[0].img.value.replace("http://", "https://") + "?width=320" : null;
   const lateTitles = lateFilms.map((f) => norm(f.label)).filter((t) => t.trim().length >= 4);
 
-  const ids = [];
-  let pageToken = "";
-  for (let page = 0; page < 2; page++) {
-    const s = await yt("search", {
-      part: "snippet", type: "video", videoDuration: "long", maxResults: "50",
-      q: `${actor.name} malayalam full movie`, ...(pageToken && { pageToken }),
-    });
-    ids.push(...(s.items || []).map((it) => it.id.videoId).filter(Boolean));
-    if (!(pageToken = s.nextPageToken)) break;
-  }
+  const s = await yt("search", {
+    part: "snippet", type: "video", videoDuration: "long", maxResults: "50",
+    q: `${actor.name} malayalam full movie`,
+  });
+  const ids = (s.items || []).map((it) => it.id.videoId).filter(Boolean);
 
   const details = await videoDetails([...new Set(ids)]);
   const videos = [];
@@ -289,7 +306,7 @@ async function buildActor(actor) {
     videos.push(card);
   }
   console.log(`  ${actor.name}: ${videos.length} movies`);
-  return { key: actor.key, name: actor.ml, photo, videos };
+  return { key: actor.key, name: actor.ml, photo, videos, updated: todayIST() };
 }
 
 // ============================================================
@@ -309,17 +326,26 @@ async function main() {
   if (fullRun) {
     const cache = await readJson(CACHE_PATH, {});
 
-    console.log("Old movies...");
-    const oldFilms = await wikidataFilms(`FILTER(YEAR(?d) >= ${OLD_MOVIES.fromYear} && YEAR(?d) <= ${OLD_MOVIES.toYear})`);
-    feed.old = await buildFilmRow("old", oldFilms, cache, today);
-
-    console.log("Comedy movies...");
-    const comedyFilms = await wikidataFilms(`?film wdt:P136 ?g. VALUES ?g { ${COMEDY_GENRES.join(" ")} } FILTER(YEAR(?d) <= ${COMEDY_MAX_YEAR})`);
-    feed.comedy = await buildFilmRow("comedy", comedyFilms, cache, today);
+    console.log("Movie rows...");
+    feed.rows = [];
+    for (const row of MOVIE_ROWS) {
+      const films = await wikidataFilms(row.where);
+      feed.rows.push({ key: row.key, title: row.title, videos: await buildFilmRow(row.key, films, cache, today) });
+    }
+    delete feed.old;    // replaced by the decade rows
+    delete feed.comedy;
 
     console.log("Actors...");
+    const prev = new Map((feed.actors || []).map((a) => [a.key, a]));
+    const ageDays = (a) => (a?.updated ? (Date.parse(today) - Date.parse(a.updated)) / 864e5 : Infinity);
+    const stale = ACTORS.filter((a) => prev.has(a.key) && ageDays(prev.get(a.key)) >= ACTOR_REFRESH_DAYS)
+      .sort((a, b) => ageDays(prev.get(b.key)) - ageDays(prev.get(a.key)))
+      .slice(0, ACTOR_REFRESH_PER_DAY);
     feed.actors = [];
-    for (const a of ACTORS) feed.actors.push(await buildActor(a));
+    for (const a of ACTORS) {
+      const rebuild = !prev.has(a.key) || stale.includes(a);
+      feed.actors.push(rebuild ? await buildActor(a) : { ...prev.get(a.key), name: a.ml });
+    }
 
     feed.moviesDate = today;
     await fs.writeFile(CACHE_PATH, JSON.stringify(cache, null, 1) + "\n");

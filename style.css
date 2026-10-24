@@ -324,16 +324,16 @@ body {
 /* ---------- Actor buttons ---------- */
 .actor-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 }
 
 .actor {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 18px 10px;
+  gap: 8px;
+  padding: 14px 6px;
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
   background: var(--surface);
@@ -348,17 +348,29 @@ body {
 }
 
 .actor-photo {
-  width: 112px;
-  height: 112px;
+  width: 84px;
+  height: 84px;
   border-radius: 50%;
   object-fit: cover;
   object-position: top;
   background: var(--border);
 }
 
+.actor-initial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 30% 20%, #ff4d4d, #e0101e 45%, #8a0014);
+  color: #fff;
+  font-size: 40px;
+  font-weight: 800;
+}
+
 .actor-name {
-  font-size: 21px;
+  font-size: 18px;
   font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
 }
 
 /* ---------- Result list ---------- */
