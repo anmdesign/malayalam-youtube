@@ -156,8 +156,15 @@ async function scrapeLiveId(channelId) {
   }
 }
 
-async function buildNews({ allowSearchFallback }) {
-  const ids = await Promise.all(NEWS_CHANNELS.map((c) => scrapeLiveId(c.id)));
+// News streams usually keep the same video id for weeks, so the last known id
+// is reused when scraping fails (YouTube often blocks it from CI servers).
+// A channel whose stream ended is searched for (100 units) at most every 12 hours.
+const NEWS_SEARCH_EVERY_HOURS = 12;
+
+async function buildNews(prevNews, searchedAt) {
+  const prevId = new Map(prevNews.map((v) => [v.channelId, v.id]));
+  const scraped = await Promise.all(NEWS_CHANNELS.map((c) => scrapeLiveId(c.id)));
+  const ids = NEWS_CHANNELS.map((c, i) => scraped[i] || prevId.get(c.id) || null);
   const details = await videoDetails(ids.filter(Boolean));
   const logos = await yt("channels", { part: "snippet", id: NEWS_CHANNELS.map((c) => c.id).join(","), maxResults: "50" });
   const logoById = new Map((logos.items || []).map((c) => [c.id, c.snippet.thumbnails.default.url]));
@@ -165,8 +172,10 @@ async function buildNews({ allowSearchFallback }) {
   const row = [];
   for (const [i, ch] of NEWS_CHANNELS.entries()) {
     let item = ids[i] && details.get(ids[i]);
-    if (!(item && item.snippet.liveBroadcastContent === "live") && allowSearchFallback) {
-      // 100 quota units, so only on the daily run
+    const last = searchedAt[ch.id];
+    const searchDue = !last || (Date.now() - Date.parse(last)) / 36e5 >= NEWS_SEARCH_EVERY_HOURS;
+    if (!(item && item.snippet.liveBroadcastContent === "live") && searchDue) {
+      searchedAt[ch.id] = new Date().toISOString();
       const s = await yt("search", { part: "snippet", channelId: ch.id, eventType: "live", type: "video", maxResults: "1" });
       const vid = s.items?.[0]?.id?.videoId;
       item = vid && (await videoDetails([vid])).get(vid);
@@ -293,7 +302,8 @@ async function main() {
   const fullRun = FORCE || feed.moviesDate !== today;
 
   console.log("Live news...");
-  feed.news = await buildNews({ allowSearchFallback: fullRun });
+  feed.newsSearchedAt ||= {};
+  feed.news = await buildNews(feed.news || [], feed.newsSearchedAt);
   feed.newsUpdatedAt = new Date().toISOString();
 
   if (fullRun) {
