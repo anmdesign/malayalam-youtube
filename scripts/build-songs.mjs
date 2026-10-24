@@ -124,7 +124,8 @@ async function loadFilms() {
   for (const r of rows) {
     const year = +r.year.value;
     const era = year >= OLD_FROM && year <= OLD_TO ? "old" : year > OLD_TO ? "new" : "older";
-    const names = r.names.value.split("|").map((n) => n.replace(/\(.*?\)/g, "").trim());
+    // Some aliases carry a prefix like "English: Ahimsa"
+    const names = r.names.value.split("|").map((n) => n.replace(/\(.*?\)/g, "").replace(/^[A-Za-z]+:\s*/, "").trim());
     const name = names.find((n) => /[a-z]/i.test(n)) || names[0];
     for (const n of names) {
       const key = loose(n);
