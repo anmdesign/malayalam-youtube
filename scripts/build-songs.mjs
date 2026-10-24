@@ -214,13 +214,13 @@ const isSongTitle = (title) => !NOT_A_SONG.test(title) && !NEW_ERA.test(title) &
 
 // The same song uploaded by several channels: "Kannum Kannum | Angadi | ..."
 // and "Kannum Kannum Thammil Video Song - Angadi (1980)" share song and film.
-// Titles often start with the name in Malayalam letters ("വെള്ളിച്ചില്ലും | Vellichillam"),
-// so the first part written in English letters is used.
+// The song name is the first part of the title; when that is in Malayalam
+// letters ("വെള്ളിച്ചില്ലും | Vellichillam"), the next part. Only consonants are
+// compared, so "Vellichillum" and "Vellichillam" are the same song.
 function songKey(s) {
-  const film = loose(s.film);
   const parts = s.title.split(/[|｜\-–—(\[]/).map((p) => loose(p.replace(NOISE, " ").replace(/[^\x00-\x7f]/g, "")));
-  const name = parts.find((p) => p.length >= 4 && p !== film) || loose(s.title);
-  return name.slice(0, 10) + "/" + film;
+  const name = parts[0].length >= 4 ? parts[0] : parts[1] || loose(s.title);
+  return name.replace(/[aeiouy]/g, "").slice(0, 8) + "/" + loose(s.film);
 }
 
 function rankSongs(songs) {
