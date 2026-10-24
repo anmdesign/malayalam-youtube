@@ -21,7 +21,7 @@ const MSG = {
   noResults:     "ഫലങ്ങൾ കിട്ടിയില്ല. വീണ്ടും പറയൂ.",
   noApiKey:      "API key സജ്ജമാക്കിയിട്ടില്ല",
   searchFailed:  "തിരയൽ പരാജയപ്പെട്ടു. വീണ്ടും ശ്രമിക്കൂ.",
-  quotaExceeded: "ഇന്നത്തെ തിരയൽ പരിധി കഴിഞ്ഞു. ഉച്ചയ്ക്ക് ശേഷം വീണ്ടും ശ്രമിക്കൂ. താഴെയുള്ള സിനിമകൾ കാണാം.",
+  openingYouTube:"YouTube-ൽ തിരയുന്നു...",
   offline:       "ഇന്റർനെറ്റ് ഇല്ല. കണക്ഷൻ നോക്കൂ.",
   micUnsupported:"ഈ ബ്രൗസറിൽ മൈക്ക് ലഭ്യമല്ല",
   heard:         "കേട്ടത്:",
@@ -369,6 +369,14 @@ async function searchYouTube(spoken) {
     return;
   }
 
+  const query = buildQuery(spoken);
+  const cached = cachedSearch(query);
+  if (cached) {
+    setStatus("");
+    showList(`${MSG.heard} “${spoken}”`, cached);
+    return;
+  }
+
   setStatus(MSG.searching, "loading");
 
   try {
@@ -378,7 +386,7 @@ async function searchYouTube(spoken) {
       maxResults: "20",
       relevanceLanguage: "ml",
       regionCode: "IN",
-      q: buildQuery(spoken),
+      q: query,
     });
     const ids = (search.items || []).map((it) => it.id && it.id.videoId).filter(Boolean);
 
@@ -404,12 +412,49 @@ async function searchYouTube(spoken) {
       return;
     }
 
+    saveSearch(query, items);
     setStatus("");
     showList(`${MSG.heard} “${spoken}”`, items);
   } catch (err) {
     console.error(err);
-    setStatus(err.quota ? MSG.quotaExceeded : MSG.searchFailed, "error");
+    if (err.quota) openYouTubeSearch(query);
+    else setStatus(MSG.searchFailed, "error");
   }
+}
+
+// Daily search limit used up: hand the query to YouTube's own search
+// (in the YouTube app on Android), which has no limit.
+function openYouTubeSearch(query) {
+  setStatus(MSG.openingYouTube, "loading");
+  const link = youtubeLink("results?search_query=" + encodeURIComponent(query));
+  if (link.newTab) window.open(link.href, "_blank", "noopener");
+  else location.href = link.href;
+}
+
+// ----- Search memory -----
+// Each search costs 1% of the day's YouTube limit, so results are kept on
+// the phone for a few days and repeated searches are free.
+const SEARCH_CACHE_KEY = "searchCache";
+const SEARCH_CACHE_DAYS = 3;
+const SEARCH_CACHE_MAX = 100;
+
+function readSearchCache() {
+  try { return JSON.parse(localStorage.getItem(SEARCH_CACHE_KEY)) || {}; }
+  catch (_) { return {}; }
+}
+
+function cachedSearch(query) {
+  const hit = readSearchCache()[query.toLowerCase()];
+  return hit && Date.now() - hit.at < SEARCH_CACHE_DAYS * 864e5 ? hit.items : null;
+}
+
+function saveSearch(query, items) {
+  const cache = readSearchCache();
+  cache[query.toLowerCase()] = { at: Date.now(), items };
+  // Keep only the newest searches so storage stays small
+  const keep = Object.entries(cache).sort((a, b) => b[1].at - a[1].at).slice(0, SEARCH_CACHE_MAX);
+  try { localStorage.setItem(SEARCH_CACHE_KEY, JSON.stringify(Object.fromEntries(keep))); }
+  catch (_) { /* storage full or blocked: just skip remembering */ }
 }
 
 async function ytApi(endpoint, params) {
