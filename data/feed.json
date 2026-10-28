@@ -4,7 +4,7 @@
    "id": "x1bfKawndzs",
    "title": "Asianet News Live | Malayalam Live News | Kerala News Updates| Breaking News| HD Live 24x7 Streaming",
    "channel": "asianetnews",
-   "thumb": "https://i.ytimg.com/vi/x1bfKawndzs/hqdefault.jpg?v=6ae14e2e",
+   "thumb": "https://i.ytimg.com/vi/x1bfKawndzs/hqdefault.jpg?v=6ae17b98",
    "duration": 0,
    "name": "ഏഷ്യാനെറ്റ് ന്യൂസ്",
    "logo": "https://yt3.ggpht.com/8eItmjbOfJwot8wd0-19KgtvF2ztf4np2qIVfJ1kMPv1ADi6wx9giU62B1j6xO0Ug2Idrqbncg=s88-c-k-c0x00ffffff-no-rj",
@@ -92,15 +92,26 @@
    "id": "T9Ol2JHqKlM",
    "title": "Janam TV News Live | ജനം ടിവി ലൈവ് | HD Streaming | Janam Live | Janam News | Malayalam News Live TV",
    "channel": "Janam TV",
-   "thumb": "https://i.ytimg.com/vi/T9Ol2JHqKlM/hqdefault.jpg?v=6a9b73ad",
+   "thumb": "https://i.ytimg.com/vi/T9Ol2JHqKlM/hqdefault.jpg?v=6ae1ad04",
    "duration": 0,
    "name": "ജനം ടിവി",
    "logo": "https://yt3.ggpht.com/ytc/AIdro_nCmUp4mMxnlpluV1MH4km_K8rR8fHG6En1jdFfpBImmBI=s88-c-k-c0x00ffffff-no-rj",
    "channelId": "UCNVkxRPqsBNejO6B9thG9Xw",
    "live": true
+  },
+  {
+   "id": "C0kzBHwUhbY",
+   "title": "Jaihind News Live | Malayalam News Live | Kerala News Live | Breaking News Live | ജയ്‌ഹിന്ദ്‌ ന്യൂസ്",
+   "channel": "Jaihind News",
+   "thumb": "https://i.ytimg.com/vi/C0kzBHwUhbY/hqdefault.jpg?v=6ae1b9c7",
+   "duration": 0,
+   "name": "ജയ്ഹിന്ദ് ന്യൂസ്",
+   "logo": "https://yt3.ggpht.com/xjrt1EqY-Kvajn_-3rA_vOArGzkUgXQ-qpwqvr4HGI3Wir6iwygBH0X08LHWbGEvsfSyglBg1A=s88-c-k-c0x00ffffff-no-rj",
+   "channelId": "UCDM528eqIJElfflkvfT-MuQ",
+   "live": true
   }
  ],
- "newsUpdatedAt": "2026-10-28T03:59:32.687Z",
+ "newsUpdatedAt": "2026-10-28T12:07:23.799Z",
  "actors": [
   {
    "key": "mohanlal",
@@ -5560,8 +5571,8 @@
  ],
  "moviesDate": "2026-10-28",
  "newsSearchedAt": {
-  "UCY18ujuIEIqOBywA0RfbINQ": "2026-10-27T21:49:24.771Z",
-  "UCDM528eqIJElfflkvfT-MuQ": "2026-10-27T21:49:24.929Z",
+  "UCY18ujuIEIqOBywA0RfbINQ": "2026-10-28T12:07:23.463Z",
+  "UCDM528eqIJElfflkvfT-MuQ": "2026-10-28T12:07:23.599Z",
   "UC-mMi78WJST4N5o8_i1FoXw": "2026-10-26T20:18:11.640Z"
  },
  "rows": [
