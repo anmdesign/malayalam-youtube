@@ -4,7 +4,7 @@
    "id": "x1bfKawndzs",
    "title": "Asianet News Live | Malayalam Live News | Kerala News Updates| Breaking News| HD Live 24x7 Streaming",
    "channel": "asianetnews",
-   "thumb": "https://i.ytimg.com/vi/x1bfKawndzs/hqdefault.jpg?v=6ae54499",
+   "thumb": "https://i.ytimg.com/vi/x1bfKawndzs/hqdefault.jpg?v=6ae56e9f",
    "duration": 0,
    "name": "ഏഷ്യാനെറ്റ് ന്യൂസ്",
    "logo": "https://yt3.ggpht.com/8eItmjbOfJwot8wd0-19KgtvF2ztf4np2qIVfJ1kMPv1ADi6wx9giU62B1j6xO0Ug2Idrqbncg=s88-c-k-c0x00ffffff-no-rj",
@@ -15,7 +15,7 @@
    "id": "tgBTspqA5nY",
    "title": "Manorama News Live | Malayalam News | Breaking News | Kerala Rain Update | Pinarayi Vijayan CMRL",
    "channel": "Manorama News",
-   "thumb": "https://i.ytimg.com/vi/tgBTspqA5nY/hqdefault.jpg?v=6ae4b96d",
+   "thumb": "https://i.ytimg.com/vi/tgBTspqA5nY/hqdefault.jpg?v=6ae5a3ce",
    "duration": 0,
    "name": "മനോരമ ന്യൂസ്",
    "logo": "https://yt3.ggpht.com/ZYxJvUMw4-3IZvUc7JP9IsZjOUbHQv5zJ9Tg4qZqSQF5ly2l28J8xekqgHFL7TtrUe1Rkh1Wsg=s88-c-k-c0x00ffffff-no-rj",
@@ -78,6 +78,17 @@
    "live": true
   },
   {
+   "id": "O5garj_wmZ8",
+   "title": "LIVE | Gyanesh Kumar Row |  ഗ്യാനേഷിനെതിരെ ഇന്ത്യ മുന്നണിയുടെ ജനകീയ കുറ്റവിചാരണ | Rahul Gandhi",
+   "channel": "News18 Kerala",
+   "thumb": "https://i.ytimg.com/vi/O5garj_wmZ8/hqdefault.jpg?v=6ae5c4c1",
+   "duration": 0,
+   "name": "ന്യൂസ് 18 കേരളം",
+   "logo": "https://yt3.ggpht.com/ytc/AIdro_noEGYn5NGuAElTdnJcp3vAZJYN5bM9ZDjFa7OfVxq2xw=s88-c-k-c0x00ffffff-no-rj",
+   "channelId": "UC-mMi78WJST4N5o8_i1FoXw",
+   "live": true
+  },
+  {
    "id": "T9Ol2JHqKlM",
    "title": "Janam TV News Live | ജനം ടിവി ലൈവ് | HD Streaming | Janam Live | Janam News | Malayalam News Live TV",
    "channel": "Janam TV",
@@ -87,9 +98,20 @@
    "logo": "https://yt3.ggpht.com/ytc/AIdro_nCmUp4mMxnlpluV1MH4km_K8rR8fHG6En1jdFfpBImmBI=s88-c-k-c0x00ffffff-no-rj",
    "channelId": "UCNVkxRPqsBNejO6B9thG9Xw",
    "live": true
+  },
+  {
+   "id": "N-VTkB7zAL8",
+   "title": "Jaihind News Live | Malayalam News Live | Kerala News Live | Breaking News Live | ജയ്‌ഹിന്ദ്‌ ന്യൂസ്",
+   "channel": "Jaihind News",
+   "thumb": "https://i.ytimg.com/vi/N-VTkB7zAL8/hqdefault.jpg?v=6ae5964a",
+   "duration": 0,
+   "name": "ജയ്ഹിന്ദ് ന്യൂസ്",
+   "logo": "https://yt3.ggpht.com/xjrt1EqY-Kvajn_-3rA_vOArGzkUgXQ-qpwqvr4HGI3Wir6iwygBH0X08LHWbGEvsfSyglBg1A=s88-c-k-c0x00ffffff-no-rj",
+   "channelId": "UCDM528eqIJElfflkvfT-MuQ",
+   "live": true
   }
  ],
- "newsUpdatedAt": "2026-10-31T04:03:53.273Z",
+ "newsUpdatedAt": "2026-10-31T11:41:32.173Z",
  "actors": [
   {
    "key": "mohanlal",
@@ -5535,9 +5557,9 @@
  ],
  "moviesDate": "2026-10-31",
  "newsSearchedAt": {
-  "UCY18ujuIEIqOBywA0RfbINQ": "2026-10-30T21:56:09.756Z",
-  "UCDM528eqIJElfflkvfT-MuQ": "2026-10-30T21:56:09.928Z",
-  "UC-mMi78WJST4N5o8_i1FoXw": "2026-10-30T21:56:09.469Z"
+  "UCY18ujuIEIqOBywA0RfbINQ": "2026-10-31T11:41:31.824Z",
+  "UCDM528eqIJElfflkvfT-MuQ": "2026-10-31T11:41:31.971Z",
+  "UC-mMi78WJST4N5o8_i1FoXw": "2026-10-31T11:41:31.637Z"
  },
  "rows": [
   {
