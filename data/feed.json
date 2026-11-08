@@ -4,7 +4,7 @@
    "id": "x1bfKawndzs",
    "title": "Asianet News Live | Malayalam Live News | Kerala News Updates| Breaking News| HD Live 24x7 Streaming",
    "channel": "asianetnews",
-   "thumb": "https://i.ytimg.com/vi/x1bfKawndzs/hqdefault.jpg?v=6aefd0cf",
+   "thumb": "https://i.ytimg.com/vi/x1bfKawndzs/hqdefault.jpg?v=6af003e3",
    "duration": 0,
    "name": "ഏഷ്യാനെറ്റ് ന്യൂസ്",
    "logo": "https://yt3.ggpht.com/8eItmjbOfJwot8wd0-19KgtvF2ztf4np2qIVfJ1kMPv1ADi6wx9giU62B1j6xO0Ug2Idrqbncg=s88-c-k-c0x00ffffff-no-rj",
@@ -15,7 +15,7 @@
    "id": "tgBTspqA5nY",
    "title": "Manorama News Live | Malayalam News Live | Breaking News | Kerala News Updates | Cheranalloor",
    "channel": "Manorama News",
-   "thumb": "https://i.ytimg.com/vi/tgBTspqA5nY/hqdefault.jpg?v=6aefeb37",
+   "thumb": "https://i.ytimg.com/vi/tgBTspqA5nY/hqdefault.jpg?v=6af06aaa",
    "duration": 0,
    "name": "മനോരമ ന്യൂസ്",
    "logo": "https://yt3.ggpht.com/ZYxJvUMw4-3IZvUc7JP9IsZjOUbHQv5zJ9Tg4qZqSQF5ly2l28J8xekqgHFL7TtrUe1Rkh1Wsg=s88-c-k-c0x00ffffff-no-rj",
@@ -98,9 +98,20 @@
    "logo": "https://yt3.ggpht.com/ytc/AIdro_nCmUp4mMxnlpluV1MH4km_K8rR8fHG6En1jdFfpBImmBI=s88-c-k-c0x00ffffff-no-rj",
    "channelId": "UCNVkxRPqsBNejO6B9thG9Xw",
    "live": true
+  },
+  {
+   "id": "Xet47xy1wRM",
+   "title": "Jaihind News Live | Malayalam News Live | Kerala News Live | Breaking News Live | ജയ്‌ഹിന്ദ്‌ ന്യൂസ്",
+   "channel": "Jaihind News",
+   "thumb": "https://i.ytimg.com/vi/Xet47xy1wRM/hqdefault.jpg?v=6af04af5",
+   "duration": 0,
+   "name": "ജയ്ഹിന്ദ് ന്യൂസ്",
+   "logo": "https://yt3.ggpht.com/xjrt1EqY-Kvajn_-3rA_vOArGzkUgXQ-qpwqvr4HGI3Wir6iwygBH0X08LHWbGEvsfSyglBg1A=s88-c-k-c0x00ffffff-no-rj",
+   "channelId": "UCDM528eqIJElfflkvfT-MuQ",
+   "live": true
   }
  ],
- "newsUpdatedAt": "2026-11-08T04:27:58.570Z",
+ "newsUpdatedAt": "2026-11-08T12:46:21.866Z",
  "actors": [
   {
    "key": "mohanlal",
@@ -5609,8 +5620,8 @@
  ],
  "moviesDate": "2026-11-08",
  "newsSearchedAt": {
-  "UCY18ujuIEIqOBywA0RfbINQ": "2026-11-07T17:25:33.259Z",
-  "UCDM528eqIJElfflkvfT-MuQ": "2026-11-07T17:25:33.441Z",
+  "UCY18ujuIEIqOBywA0RfbINQ": "2026-11-08T12:46:21.343Z",
+  "UCDM528eqIJElfflkvfT-MuQ": "2026-11-08T12:46:21.536Z",
   "UC-mMi78WJST4N5o8_i1FoXw": "2026-11-08T04:27:58.277Z"
  },
  "rows": [
