@@ -1,10 +1,10 @@
 {
  "news": [
   {
-   "id": "x1bfKawndzs",
+   "id": "0QMlfUjUVzk",
    "title": "Asianet News Live | Malayalam Live News | Kerala News Updates| Breaking News| HD Live 24x7 Streaming",
    "channel": "asianetnews",
-   "thumb": "https://i.ytimg.com/vi/x1bfKawndzs/hqdefault.jpg?v=6af34cd4",
+   "thumb": "https://i.ytimg.com/vi/0QMlfUjUVzk/hqdefault.jpg?v=6af3f044",
    "duration": 0,
    "name": "ഏഷ്യാനെറ്റ് ന്യൂസ്",
    "logo": "https://yt3.ggpht.com/8eItmjbOfJwot8wd0-19KgtvF2ztf4np2qIVfJ1kMPv1ADi6wx9giU62B1j6xO0Ug2Idrqbncg=s88-c-k-c0x00ffffff-no-rj",
@@ -24,7 +24,7 @@
   },
   {
    "id": "RbxEftGN584",
-   "title": "Mathrubhumi News Live| Malayalam News Live | Kerala News Live | Cinematographer Shaji Kumar dies",
+   "title": "Mathrubhumi News Live| Malayalam News Live | Kerala News Live |  Bar Licensing Row | M Liju",
    "channel": "Mathrubhumi News",
    "thumb": "https://i.ytimg.com/vi/RbxEftGN584/hqdefault.jpg?v=6aefc4ff",
    "duration": 0,
@@ -78,6 +78,17 @@
    "live": true
   },
   {
+   "id": "3QHT33kb_8k",
+   "title": "Israel Govt Formation LIVE | Israeli President Picks Gadi Eisenkot | Benjamin Netanyahu | N18G",
+   "channel": "News18 Kerala",
+   "thumb": "https://i.ytimg.com/vi/3QHT33kb_8k/hqdefault.jpg?v=6af0a671",
+   "duration": 0,
+   "name": "ന്യൂസ് 18 കേരളം",
+   "logo": "https://yt3.ggpht.com/ytc/AIdro_noEGYn5NGuAElTdnJcp3vAZJYN5bM9ZDjFa7OfVxq2xw=s88-c-k-c0x00ffffff-no-rj",
+   "channelId": "UC-mMi78WJST4N5o8_i1FoXw",
+   "live": true
+  },
+  {
    "id": "T9Ol2JHqKlM",
    "title": "Janam TV News Live | ജനം ടിവി ലൈവ് | HD Streaming | Janam Live | Janam News | Malayalam News Live TV",
    "channel": "Janam TV",
@@ -89,7 +100,7 @@
    "live": true
   }
  ],
- "newsUpdatedAt": "2026-11-10T21:12:05.285Z",
+ "newsUpdatedAt": "2026-11-11T04:43:05.332Z",
  "actors": [
   {
    "key": "mohanlal",
@@ -5586,7 +5597,8 @@
  "newsSearchedAt": {
   "UCY18ujuIEIqOBywA0RfbINQ": "2026-11-10T21:12:04.928Z",
   "UCDM528eqIJElfflkvfT-MuQ": "2026-11-10T21:12:05.112Z",
-  "UC-mMi78WJST4N5o8_i1FoXw": "2026-11-10T14:30:02.466Z"
+  "UC-mMi78WJST4N5o8_i1FoXw": "2026-11-11T04:43:05.101Z",
+  "UCf8w5m0YsRa8MHQ5bwSGmbw": "2026-11-11T04:43:04.876Z"
  },
  "rows": [
   {
