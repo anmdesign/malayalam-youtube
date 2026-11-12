@@ -4,7 +4,7 @@
    "id": "0QMlfUjUVzk",
    "title": "Asianet News Live | Malayalam Live News | Kerala News Updates| Breaking News| HD Live 24x7 Streaming",
    "channel": "asianetnews",
-   "thumb": "https://i.ytimg.com/vi/0QMlfUjUVzk/hqdefault.jpg?v=6af54539",
+   "thumb": "https://i.ytimg.com/vi/0QMlfUjUVzk/hqdefault.jpg?v=6af5cd3b",
    "duration": 0,
    "name": "ഏഷ്യാനെറ്റ് ന്യൂസ്",
    "logo": "https://yt3.ggpht.com/8eItmjbOfJwot8wd0-19KgtvF2ztf4np2qIVfJ1kMPv1ADi6wx9giU62B1j6xO0Ug2Idrqbncg=s88-c-k-c0x00ffffff-no-rj",
@@ -15,7 +15,7 @@
    "id": "tgBTspqA5nY",
    "title": "Manorama News Live | Malayalam News Live | Breaking News | Kerala News Updates | Latest News",
    "channel": "Manorama News",
-   "thumb": "https://i.ytimg.com/vi/tgBTspqA5nY/hqdefault.jpg?v=6af5387f",
+   "thumb": "https://i.ytimg.com/vi/tgBTspqA5nY/hqdefault.jpg?v=6af5ce2c",
    "duration": 0,
    "name": "മനോരമ ന്യൂസ്",
    "logo": "https://yt3.ggpht.com/ZYxJvUMw4-3IZvUc7JP9IsZjOUbHQv5zJ9Tg4qZqSQF5ly2l28J8xekqgHFL7TtrUe1Rkh1Wsg=s88-c-k-c0x00ffffff-no-rj",
@@ -48,7 +48,7 @@
    "id": "nObUcHKZEGY",
    "title": "24x7 Reporter Live TV | Kerala Breaking News | HD Live  Streaming | Latest Malayalam News | Reporter",
    "channel": "REPORTER LIVE",
-   "thumb": "https://i.ytimg.com/vi/nObUcHKZEGY/hqdefault.jpg?v=6af48e23",
+   "thumb": "https://i.ytimg.com/vi/nObUcHKZEGY/hqdefault.jpg?v=6af5cf1a",
    "duration": 0,
    "name": "റിപ്പോർട്ടർ ടിവി",
    "logo": "https://yt3.ggpht.com/bJDd0TLwG0dXlTmaX9RvX1Ch99KMWU8tqpMIXu6W46dNfIS7gK3pC243M--uLOHgPaNKTaQF=s88-c-k-c0x00ffffff-no-rj",
@@ -78,6 +78,17 @@
    "live": true
   },
   {
+   "id": "J0qmd4L7cvM",
+   "title": "HD LIVE | Shone George Press Meet | ഷോൺ ജോർജ് മാധ്യമങ്ങളെ കാണുന്നു  | BJP | N18L",
+   "channel": "News18 Kerala",
+   "thumb": "https://i.ytimg.com/vi/J0qmd4L7cvM/hqdefault.jpg?v=6af56823",
+   "duration": 0,
+   "name": "ന്യൂസ് 18 കേരളം",
+   "logo": "https://yt3.ggpht.com/ytc/AIdro_noEGYn5NGuAElTdnJcp3vAZJYN5bM9ZDjFa7OfVxq2xw=s88-c-k-c0x00ffffff-no-rj",
+   "channelId": "UC-mMi78WJST4N5o8_i1FoXw",
+   "live": true
+  },
+  {
    "id": "T9Ol2JHqKlM",
    "title": "Janam TV News Live | ജനം ടിവി ലൈവ് | HD Streaming | Janam Live | Janam News | Malayalam News Live TV",
    "channel": "Janam TV",
@@ -87,20 +98,9 @@
    "logo": "https://yt3.ggpht.com/ytc/AIdro_nCmUp4mMxnlpluV1MH4km_K8rR8fHG6En1jdFfpBImmBI=s88-c-k-c0x00ffffff-no-rj",
    "channelId": "UCNVkxRPqsBNejO6B9thG9Xw",
    "live": true
-  },
-  {
-   "id": "7rCh2opoVKE",
-   "title": "Jaihind News Live | Malayalam News Live | Kerala News Live | Breaking News Live | ജയ്‌ഹിന്ദ്‌ ന്യൂസ്",
-   "channel": "Jaihind News",
-   "thumb": "https://i.ytimg.com/vi/7rCh2opoVKE/hqdefault.jpg?v=6af5096a",
-   "duration": 0,
-   "name": "ജയ്ഹിന്ദ് ന്യൂസ്",
-   "logo": "https://yt3.ggpht.com/xjrt1EqY-Kvajn_-3rA_vOArGzkUgXQ-qpwqvr4HGI3Wir6iwygBH0X08LHWbGEvsfSyglBg1A=s88-c-k-c0x00ffffff-no-rj",
-   "channelId": "UCDM528eqIJElfflkvfT-MuQ",
-   "live": true
   }
  ],
- "newsUpdatedAt": "2026-11-12T05:46:13.816Z",
+ "newsUpdatedAt": "2026-11-12T14:38:12.100Z",
  "actors": [
   {
    "key": "mohanlal",
@@ -5597,7 +5597,7 @@
  "newsSearchedAt": {
   "UCY18ujuIEIqOBywA0RfbINQ": "2026-11-12T05:46:13.309Z",
   "UCDM528eqIJElfflkvfT-MuQ": "2026-11-12T05:46:13.526Z",
-  "UC-mMi78WJST4N5o8_i1FoXw": "2026-11-11T21:43:54.585Z",
+  "UC-mMi78WJST4N5o8_i1FoXw": "2026-11-12T14:38:11.927Z",
   "UCf8w5m0YsRa8MHQ5bwSGmbw": "2026-11-11T04:43:04.876Z"
  },
  "rows": [
